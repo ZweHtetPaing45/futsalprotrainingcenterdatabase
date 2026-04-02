@@ -1,0 +1,61 @@
+2026-04-02 00:57:57 [31merror[39m:: Column count doesn't match value count at row 1
+2026-04-02 01:11:18 [31merror[39m:: "email" must be a valid email
+2026-04-02 01:11:28 [31merror[39m:: "phone" with value "09769460188" fails to match the required pattern: /^[0-9]{10}$/
+2026-04-02 01:13:11 [31merror[39m:: "nrc" with value "7/pakapata/002675" fails to match the required pattern: /^\d{1,20}\/[a-zA-Z]+\([A-Z]\)\d{6}$/
+2026-04-02 01:18:56 [31merror[39m:: User already exist
+2026-04-02 01:19:26 [31merror[39m:: User already exist
+2026-04-02 01:19:45 [31merror[39m:: User already exist
+2026-04-02 01:20:18 [31merror[39m:: User already exist
+2026-04-02 01:20:26 [31merror[39m:: User already exist
+2026-04-02 01:20:43 [31merror[39m:: User already exist
+2026-04-02 01:21:06 [31merror[39m:: User already exist
+2026-04-02 01:21:38 [31merror[39m:: User already exist
+2026-04-02 01:23:22 [31merror[39m:: User already exist
+2026-04-02 01:24:07 [31merror[39m:: User already exist
+2026-04-02 01:28:55 [31merror[39m:: User already exist
+2026-04-02 01:31:40 [31merror[39m:: User already exist
+2026-04-02 01:32:07 [31merror[39m:: User already exist
+2026-04-02 01:33:26 [31merror[39m:: User already exist
+2026-04-02 01:33:56 [31merror[39m:: User already exist
+2026-04-02 01:34:25 [31merror[39m:: User already exist
+2026-04-02 01:35:11 [31merror[39m:: User already exist
+2026-04-02 01:35:37 [31merror[39m:: User already exist
+2026-04-02 01:35:55 [31merror[39m:: User already exist
+2026-04-02 01:36:17 [31merror[39m:: User already exist
+2026-04-02 01:40:55 [31merror[39m:: User already exist
+2026-04-02 01:41:07 [31merror[39m:: User already exist
+2026-04-02 01:44:37 [31merror[39m:: User already exist
+2026-04-02 01:44:53 [31merror[39m:: User already exist
+2026-04-02 02:08:23 [31merror[39m:: "name" is required
+2026-04-02 02:08:55 [31merror[39m:: "emailOrPhone" is required
+2026-04-02 02:09:27 [31merror[39m:: emailOrPhone.include is not a function
+2026-04-02 02:14:02 [31merror[39m:: User not found
+2026-04-02 02:18:08 [31merror[39m:: User already exist
+2026-04-02 11:23:09 [31merror[39m:: "stateCode" with value "7" fails to match the required pattern: /^[0-9]{2}$/
+2026-04-02 11:26:29 [31merror[39m:: User already exist
+2026-04-02 11:27:29 [31merror[39m:: User already exist
+2026-04-02 11:27:36 [31merror[39m:: User already exist
+2026-04-02 11:28:25 [31merror[39m:: User already exist
+2026-04-02 11:30:00 [31merror[39m:: User already exist
+2026-04-02 11:46:46 [31merror[39m:: "emailOrPhone" is required
+2026-04-02 11:47:03 [31merror[39m:: "emailOrPhone" is required
+2026-04-02 11:49:24 [31merror[39m:: emailOrPhone is not defined
+2026-04-02 15:43:18 [31merror[39m:: Unauthorized
+2026-04-02 15:43:18 [31merror[39m:: Unauthorized
+2026-04-02 15:43:59 [31merror[39m:: Unauthorized 3
+2026-04-02 15:43:59 [31merror[39m:: Unauthorized 3
+2026-04-02 15:45:06 [31merror[39m:: Unterminated string in JSON at position 32 (line 1 column 33)
+2026-04-02 15:45:26 [31merror[39m:: Unauthorized 1
+2026-04-02 15:45:26 [31merror[39m:: Unauthorized 1
+2026-04-02 17:20:04 [31merror[39m:: Error in updateProfile: Table 'futsalprotrainingcenterdatabase.ceateuser' doesn't exist
+2026-04-02 19:35:41 [31merror[39m:: Error in updateProfile: Table 'futsalprotrainingcenterdatabase.ceateuser' doesn't exist
+2026-04-02 19:40:54 [31merror[39m:: User not found
+2026-04-02 19:54:16 [31merror[39m:: User not found
+2026-04-02 20:27:02 [31merror[39m:: User not found
+2026-04-02 20:50:35 [31merror[39m:: "name" is not allowed to be empty
+2026-04-02 20:51:23 [31merror[39m:: "dateOfBirth" is required
+2026-04-02 20:51:46 [31merror[39m:: "dateOfBirth" is required
+2026-04-02 20:53:08 [31merror[39m:: "dateOfBirth" is required
+2026-04-02 20:53:14 [31merror[39m:: "dateOfBirth" is required
+2026-04-02 20:55:06 [31merror[39m:: "dateOfBirth" is required
+2026-04-02 20:57:26 [31merror[39m:: User not found
