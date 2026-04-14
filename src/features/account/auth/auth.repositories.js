@@ -3,10 +3,10 @@ const logger = require('../../../utils/logger');
 const AppError = require('../../../utils/logger');
 
 
-exports.createUser = async (name,email,phone,nrc,dateOfBirth,password,image_url) => {
+exports.createUser = async (name,email,phone,dateOfBirth,password,image_url) => {
     try{
 
-        await com.pool.query('insert into createuser(name,email,phone,nrc,dateOfBirth,password,image_url) values(?,?,?,?,?,?,?)',[name,email,phone,nrc,dateOfBirth,password,image_url]);
+        await com.pool.query('insert into createuser(name,email,phone,dateOfBirth,password,image_url) values(?,?,?,?,?,?)',[name,email,phone,dateOfBirth,password,image_url]);
 
         return true;
     }catch(error){
@@ -33,10 +33,10 @@ exports.findUsername = async (name)=>{
     }
 }
 
-exports.findUser = async (email,phone,nrc)=>{
+exports.findUser = async (email,phone)=>{
     try{
 
-        const result = await com.pool.query('select * from createuser where email = ? or phone = ? or nrc = ?',[email,phone,nrc]);
+        const result = await com.pool.query('select * from createuser where email = ? or phone = ?',[email,phone]);
 
         if(result[0].length === 0){
             return false;

@@ -2,9 +2,14 @@ const routes = require('.././features/account/auth/auth.route');
 const router = require('express').Router();
 const myprofile = require('../features/account/profile/myprofile/myprofile.route');
 const editRoutes = require('../features/account/profile/editprofile/editprofile.route');
-
+const changePassword = require('../features/account/profile/settings&preferences/changepassword/changepassword.route');
+const tagShowProductRouter = require('../features/home/tagsShowProduct/tagshowProduct.route');
+const categoryShowRouter = require('../features/home/CategoryShow/categoryShow.route');
 router.use('/auth',routes);
 router.use('/myprofile',myprofile);
 router.use('/editProfiled',editRoutes);
+router.use('/changepassword',changePassword);
+router.use('/homeshow',tagShowProductRouter);
+router.use('/homecategory',categoryShowRouter);
 
 module.exports = router;

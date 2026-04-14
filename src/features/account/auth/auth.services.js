@@ -6,13 +6,15 @@ const bcrypt = require('bcrypt');
 class Services {
 
 
-    async createUser(name,email,phone,nrc,dateOfBirth,password,image_url){
+    async createUser(name,email,phone,dateOfBirth,password,image_url){
 
-        const exit = await repo.findUser(email,phone,nrc);
+        const exit = await repo.findUser(email,phone);
 
         console.log(exit);
 
         if(exit)throw new AppError('User already exist', 400);
+
+
 
         const salt = await bcrypt.genSalt(12);
 
@@ -20,7 +22,7 @@ class Services {
 
         password = hashpassword;
         
-        const result = await repo.createUser(name,email,phone,nrc,dateOfBirth,password,image_url);
+        const result = await repo.createUser(name,email,phone,dateOfBirth,password,image_url);
 
         if(result){
             const token = util.generateToken({name,email,phone});

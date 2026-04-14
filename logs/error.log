@@ -59,3 +59,28 @@
 2026-04-02 20:53:14 [31merror[39m:: "dateOfBirth" is required
 2026-04-02 20:55:06 [31merror[39m:: "dateOfBirth" is required
 2026-04-02 20:57:26 [31merror[39m:: User not found
+2026-04-03 13:49:46 [31merror[39m:: "email" must be a valid email
+2026-04-05 22:26:01 [31merror[39m:: "stateCode" is required
+2026-04-09 19:51:33 [31merror[39m:: Cannot read properties of undefined (reading 'name')
+2026-04-09 19:51:33 [31merror[39m:: Failed to show product
+2026-04-09 19:51:43 [31merror[39m:: Cannot read properties of undefined (reading 'name')
+2026-04-09 19:51:43 [31merror[39m:: Failed to show product
+2026-04-11 00:53:31 [31merror[39m:: Category not found
+2026-04-11 01:16:05 [31merror[39m:: Unknown column 'pv.speed' in 'field list'
+2026-04-11 01:16:05 [31merror[39m:: Failed to create user
+2026-04-11 01:16:27 [31merror[39m:: Unknown column 'pv.speed' in 'field list'
+2026-04-11 01:16:27 [31merror[39m:: Failed to create user
+2026-04-11 01:19:44 [31merror[39m:: Unknown column 'pv.speed' in 'field list'
+2026-04-11 01:19:44 [31merror[39m:: Failed to create user
+2026-04-11 01:21:31 [31merror[39m:: Unknown column 'pv.speed' in 'field list'
+2026-04-11 01:21:31 [31merror[39m:: Failed to create user
+2026-04-11 01:42:01 [31merror[39m:: Category not found
+2026-04-11 01:43:15 [31merror[39m:: Category not found
+2026-04-11 01:43:18 [31merror[39m:: Category not found
+2026-04-11 11:19:49 [31merror[39m:: [object Object]
+2026-04-11 11:19:49 [31merror[39m:: Failed to create user
+2026-04-11 11:19:51 [31merror[39m:: [object Object]
+2026-04-11 11:19:51 [31merror[39m:: Failed to create user
+2026-04-11 11:19:54 [31merror[39m:: [object Object]
+2026-04-11 11:19:54 [31merror[39m:: Failed to create user
+2026-04-14 10:35:26 [31merror[39m:: jwt expired

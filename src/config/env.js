@@ -10,5 +10,7 @@ module.exports ={
     port: process.env.PORT,
     cloud_name: process.env.CLOUD_NAME,
     cloud_api_key: process.env.CLOUD_API_KEY,
-    cloud_api_secret: process.env.CLOUD_API_SECRET
+    cloud_api_secret: process.env.CLOUD_API_SECRET,
+    email_user: process.env.EMAIL_USER,
+    email_password: process.env.EMAIL_PASS
 }

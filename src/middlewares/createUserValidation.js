@@ -6,10 +6,10 @@ const createUserSchema = joi.object({
     name: joi.string().min(3).max(50).required(),
     email: joi.string().email().required(),
     phone: joi.string().pattern(/^[0-9]{11}$/).required(),
-    stateCode: joi.string().pattern(/^[0-9၀-၉]{1,2}$/).required(),
-    township: joi.string().pattern(/^[က-အ]{3}$/).required(),
-    type: joi.string().valid('နိုင်', 'ဧည့်', 'ပြု').required(),
-    number: joi.string().pattern(/^[0-9၀-၉]{6}$/).required(),
+    // stateCode: joi.string().pattern(/^[0-9၀-၉]{1,2}$/).required(),
+    // township: joi.string().pattern(/^[က-အ]{3}$/).required(),
+    // type: joi.string().valid('နိုင်', 'ဧည့်', 'ပြု').required(),
+    // number: joi.string().pattern(/^[0-9၀-၉]{6}$/).required(),
     dateOfBirth: joi.date().iso().less('now').required(),
     password: joi.string().min(6).max(20).required()
 });
@@ -28,6 +28,11 @@ const updateProfileSchema = joi.object({
 });
 
 
+const showCategoryProduct = joi.object({
+    name: joi.string().min(1).max(255).required()
+})
+
+
 const createValidate = (schema)=>{
     return (req,res,next)=>{
         const {error,value} = schema.validate(req.body);
@@ -41,6 +46,7 @@ const createValidate = (schema)=>{
 }
 
 module.exports = {
+    showCategoryProduct,
     createUserSchema,
     loginUserSchema,
     updateProfileSchema,
