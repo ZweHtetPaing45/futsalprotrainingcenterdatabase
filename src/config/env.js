@@ -1,10 +1,10 @@
 require('dotenv').config();
 
 module.exports ={
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
     jwt_secret: process.env.JWT_SECRET_KEY,
     jwt_expires_in: process.env.JWT_EXPIRES_IN,
     port: process.env.PORT,

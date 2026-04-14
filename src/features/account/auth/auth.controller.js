@@ -6,8 +6,6 @@ class AuthController{
     async createUser(req,res,next){
         try{ 
 
-
-
             const {name,email,phone,dateOfBirth,password} = req.body;
 
             if(!name || !email || !phone || !dateOfBirth || !password){
