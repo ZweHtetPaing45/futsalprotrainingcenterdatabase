@@ -271,3 +271,16 @@
 2026-04-15 11:03:24 [31merror[39m:: Invalid session
 2026-04-15 11:03:41 [31merror[39m:: Invalid OTP
 2026-04-15 11:07:41 [32minfo[39m:: Server is running on port 5001
+2026-04-15 21:47:57 [32minfo[39m:: Server is running on port 5001
+2026-04-15 21:48:23 [31merror[39m:: User not found
+2026-04-15 21:55:02 [32minfo[39m:: Server is running on port 5001
+2026-04-15 21:56:43 [32minfo[39m:: Server is running on port 5001
+2026-04-15 21:58:05 [32minfo[39m:: Server is running on port 5001
+2026-04-15 21:59:58 [32minfo[39m:: Server is running on port 5001
+2026-04-15 22:01:48 [32minfo[39m:: Server is running on port 5001
+2026-04-15 22:02:11 [31merror[39m:: Image is required
+2026-04-15 22:02:49 [32minfo[39m:: Server is running on port 5001
+2026-04-15 22:02:51 [31merror[39m:: Image is required
+2026-04-15 22:03:54 [32minfo[39m:: Server is running on port 5001
+2026-04-15 22:03:57 [31merror[39m:: "email" must be a valid email
+2026-04-15 22:04:21 [31merror[39m:: "email" must be a valid email

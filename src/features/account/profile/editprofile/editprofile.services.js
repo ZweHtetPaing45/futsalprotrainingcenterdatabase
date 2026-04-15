@@ -18,8 +18,8 @@ class editprofileServices{
         const imageUrl = result.image_url;
         const publicId = result.public_id;
 
-        // console.log('imageUrl',imageUrl);
-        // console.log('publicId',publicId);
+        console.log('imageUrl',imageUrl);
+        console.log('publicId',publicId);
 
         const updateResult = await repo.updateProfile(name,dateOfbirth,email,phone,address,tokenEmail,imageUrl,publicId);
 

@@ -7,6 +7,7 @@ exports.updateProfile = async (name,dateOfbirth,email,phone,address,tokenEmail,i
     try{
 
         
+        console.log(tokenEmail);
         
         const result = await com.pool.query('update createuser set name = ?, dateOfBirth = ?, email = ?, phone = ?, address = ? , image_url = ?, public_Id = ? where email = ?', [name,dateOfbirth,email,phone,address,imageUrl,publicId,tokenEmail]);
 

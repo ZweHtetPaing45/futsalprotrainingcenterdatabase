@@ -11,10 +11,13 @@ class editProfileController{
             //token userData
             const userdata = req.user;
 
+            // console.log('Userdata',userdata);
+
             if(!file)throw new AppError('Image is required',400);
             
-
             const tokenEmail = userdata[0].email;
+
+            console.log('Token Email',tokenEmail);
 
             const {name,dateOfbirth,email,phone,address} = req.body;
 
