@@ -84,3 +84,10 @@
 2026-04-11 11:19:54 [31merror[39m:: [object Object]
 2026-04-11 11:19:54 [31merror[39m:: Failed to create user
 2026-04-14 10:35:26 [31merror[39m:: jwt expired
+2026-04-15 11:00:40 [31merror[39m:: Invalid session
+2026-04-15 11:00:44 [31merror[39m:: Invalid session
+2026-04-15 11:00:47 [31merror[39m:: Invalid session
+2026-04-15 11:00:50 [31merror[39m:: Invalid session
+2026-04-15 11:03:06 [31merror[39m:: Invalid session
+2026-04-15 11:03:24 [31merror[39m:: Invalid session
+2026-04-15 11:03:41 [31merror[39m:: Invalid OTP

@@ -4,5 +4,6 @@ const {createUserSchema,createValidate,loginUserSchema} = require('../../../midd
 
 router.post('/createUser',createValidate(createUserSchema), controller.createUser);
 router.post('/login',createValidate(loginUserSchema), controller.loginUser);
+router.post('/verifyOtp',controller.verifyOtp);
 
 module.exports = router;

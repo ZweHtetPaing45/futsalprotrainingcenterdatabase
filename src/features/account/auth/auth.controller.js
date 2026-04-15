@@ -28,6 +28,28 @@ class AuthController{
     }
 
 
+    async verifyOtp(req,res,next){
+        try{
+
+            const {otp,tempToken} = req.body;
+
+            if(!otp || !tempToken){
+                throw new AppError('All fields are required',400);
+            }
+            const token = await services.verifyOtp(tempToken,otp);
+
+            res.status(201).json({
+                status: 'success',
+                message: 'OTP verified',
+                token
+            });
+
+        }catch(error){
+            next(error);
+        }
+    }
+
+
 
     async loginUser(req,res,next){
         try{
