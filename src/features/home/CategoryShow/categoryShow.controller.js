@@ -114,6 +114,21 @@ class categoryShowController{
             next(error);
         }
     }
+
+    async allCategory(req,res,next){
+        try{
+
+            const result = await service.allCategory();
+
+            res.status(200).json({
+                status: 'success',
+                result
+            });
+
+        }catch(error){
+            next(error);
+        }
+    }
 }
 
 module.exports = new categoryShowController();

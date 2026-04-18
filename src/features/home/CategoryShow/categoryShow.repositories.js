@@ -28,7 +28,7 @@ exports.allShowCategory = async ()=>{
     pi.image_url,
 
     -- t.id AS tag_id,
-    t.name AS tag_name
+    t.name AS tags
 
 FROM products p
 JOIN categories c ON p.category_id = c.id
@@ -122,7 +122,7 @@ exports.allBrandShowProduct = async()=>{
     p.rating,
     p.created_at,
 
-    GROUP_CONCAT(DISTINCT pi.image_url) AS images,
+    GROUP_CONCAT(DISTINCT pi.image_url) AS image_url,
     GROUP_CONCAT(DISTINCT t.name) AS tags
 
 FROM products p
@@ -170,20 +170,20 @@ exports.nameBrandShowProduct = async(name)=>{
     p.rating,
     p.created_at,
 
-    GROUP_CONCAT(DISTINCT pi.image_url) AS images,
+    GROUP_CONCAT(DISTINCT pi.image_url) AS image_url,
     GROUP_CONCAT(DISTINCT t.name) AS tags
 
-FROM products p
-JOIN brands b ON p.brand_id = b.id
-LEFT JOIN categories c ON p.category_id = c.id
+    FROM products p
+    JOIN brands b ON p.brand_id = b.id
+    LEFT JOIN categories c ON p.category_id = c.id
 
-LEFT JOIN product_images pi ON p.id = pi.product_id
-LEFT JOIN product_tags pt ON p.id = pt.product_id
-LEFT JOIN tags t ON pt.tag_id = t.id
+    LEFT JOIN product_images pi ON p.id = pi.product_id
+    LEFT JOIN product_tags pt ON p.id = pt.product_id
+    LEFT JOIN tags t ON pt.tag_id = t.id
 
-WHERE b.name = ?
-GROUP BY p.id; 
-            `,[name]);
+    WHERE b.name = ?
+    GROUP BY p.id; 
+                `,[name]);
 
     if(result[0].length === 0){
         return false;
@@ -214,7 +214,7 @@ exports.allTagsShowProduct = async()=>{
     p.made,
 
     GROUP_CONCAT(DISTINCT t.name) AS tags,
-    GROUP_CONCAT(DISTINCT pi.image_url) AS images
+    GROUP_CONCAT(DISTINCT pi.image_url) AS image_url
 
 FROM products p
 
@@ -258,8 +258,8 @@ exports.tagNameProduct = async(name)=>{
     p.rating,
     p.made,
 
-    GROUP_CONCAT(DISTINCT t.name) AS tags,
-    GROUP_CONCAT(DISTINCT pi.image_url) AS images
+    GROUP_CONCAT(DISTINCT pi.image_url) AS image_url,
+    GROUP_CONCAT(DISTINCT t.name) AS tags
 
 FROM products p
 
@@ -282,7 +282,6 @@ GROUP BY p.id;`,[name]);
                 return result[0];
             }
 
-
     }catch(error){
         logger.error({
             message: error.message,
@@ -290,4 +289,16 @@ GROUP BY p.id;`,[name]);
         });
         throw new AppError('Failed to create user',500);
     }
+}
+
+exports.allCategory = async ()=>{
+    const [result] = await com.pool.query('select id,name,image_url from categories');
+
+    if(result.length === 0){
+        return false;
+    }
+
+    // console.log(result);
+
+    return result;
 }

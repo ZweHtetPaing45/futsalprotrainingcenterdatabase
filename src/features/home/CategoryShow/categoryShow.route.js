@@ -8,5 +8,5 @@ router.get('/allbrand',controller.allBandNameProduct);
 router.get('/brand/:name',createValidate(showCategoryProduct),controller.nameBrandShowProduct);
 router.get('/alltag',controller.allTagShowProduct);
 router.get('/tag/:name',createValidate(showCategoryProduct),controller.tagNameProduct);
-
+router.get('/category',controller.allCategory);
 module.exports = router;

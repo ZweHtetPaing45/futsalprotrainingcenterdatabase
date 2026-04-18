@@ -11,5 +11,4 @@ router.use('/editProfiled',editRoutes);
 router.use('/changepassword',changePassword);
 router.use('/homeshow',tagShowProductRouter);
 router.use('/homecategory',categoryShowRouter);
-
 module.exports = router;

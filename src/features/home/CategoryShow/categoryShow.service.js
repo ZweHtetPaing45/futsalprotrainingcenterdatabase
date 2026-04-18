@@ -46,6 +46,12 @@ class categoryShowServices{
 
         return result;
     }
+
+    async allCategory(){
+        const result = await repo.allCategory();
+
+        return result;
+    }
 }
 
 module.exports = new categoryShowServices();

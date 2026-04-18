@@ -97,3 +97,18 @@
 2026-04-15 22:03:57 [31merror[39m:: "email" must be a valid email
 2026-04-15 22:04:21 [31merror[39m:: "email" must be a valid email
 2026-04-15 22:48:01 [31merror[39m:: User not found
+2026-04-18 18:18:24 [31merror[39m:: jwt expired
+2026-04-18 18:18:56 [31merror[39m:: "name" is not allowed to be empty
+2026-04-18 23:15:30 [31merror[39m:: User not found
+2026-04-18 23:38:27 [31merror[39m:: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'GROUP_CONCAT(DISTINCT t.name) AS tags,
+    
+FROM products p
+
+JOIN product_tags p' at line 12
+2026-04-18 23:38:27 [31merror[39m:: Failed to create user
+2026-04-18 23:38:32 [31merror[39m:: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'GROUP_CONCAT(DISTINCT t.name) AS tags,
+    
+FROM products p
+
+JOIN product_tags p' at line 12
+2026-04-18 23:38:32 [31merror[39m:: Failed to create user

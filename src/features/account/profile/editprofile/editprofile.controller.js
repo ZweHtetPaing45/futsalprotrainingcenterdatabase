@@ -13,7 +13,7 @@ class editProfileController{
 
             // console.log('Userdata',userdata);
 
-            if(!file)throw new AppError('Image is required',400);
+            // if(!file)throw new AppError('Image is required',400);
             
             const tokenEmail = userdata[0].email;
 
