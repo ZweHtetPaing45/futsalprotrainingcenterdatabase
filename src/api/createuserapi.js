@@ -5,10 +5,14 @@ const editRoutes = require('../features/account/profile/editprofile/editprofile.
 const changePassword = require('../features/account/profile/settings&preferences/changepassword/changepassword.route');
 const tagShowProductRouter = require('../features/home/tagsShowProduct/tagshowProduct.route');
 const categoryShowRouter = require('../features/home/CategoryShow/categoryShow.route');
+const cartOrderRouter = require('../features/cart/cart.route');
+
+
 router.use('/auth',routes);
 router.use('/myprofile',myprofile);
 router.use('/editProfiled',editRoutes);
 router.use('/changepassword',changePassword);
 router.use('/homeshow',tagShowProductRouter);
 router.use('/homecategory',categoryShowRouter);
+router.use('/cart',cartOrderRouter);
 module.exports = router;
