@@ -4,51 +4,63 @@ const repo = require('./categoryShow.repositories');
 
 class categoryShowServices{
 
-    async categoryShow(){
-
-        const result = await repo.allShowCategory();
-
-        // if(!result)throw new AppError('Category not found',404);
-
-        return result;
-
-    }
-
-    async categoryNameShowProduct(name){
-
-        const result = await repo.categoryNameShowProduct(name);
-
-        // if(!result)throw new AppError('Category not found',404);
+    async showProduct(){
+        const result = await repo.showProducts();
 
         return result;
     }
 
-    async allBrandNameShowProduct(){
-        const result = await repo.allBrandShowProduct();
+    // async categoryShow(){
 
-        return result;
-    }
+    //     const result = await repo.allShowCategory();
 
-    async nameBrandShowProduct(name){
-        const result = await repo.nameBrandShowProduct(name);
+    //     // if(!result)throw new AppError('Category not found',404);
 
-        return result;
-    }
+    //     return result;
 
-    async allTagShowProduct(){
-        const result = await repo.allTagsShowProduct();
+    // }
 
-        return result;
-    }
+    // async categoryNameShowProduct(name){
 
-    async tagNameProduct(name){
-        const result = await repo.tagNameProduct(name);
+    //     const result = await repo.categoryNameShowProduct(name);
 
-        return result;
-    }
+    //     // if(!result)throw new AppError('Category not found',404);
+
+    //     return result;
+    // }
+
+    // async allBrandNameShowProduct(){
+    //     const result = await repo.allBrandShowProduct();
+
+    //     return result;
+    // }
+
+    // async nameBrandShowProduct(name){
+    //     const result = await repo.nameBrandShowProduct(name);
+
+    //     return result;
+    // }
+
+    // async allTagShowProduct(){
+    //     const result = await repo.allTagsShowProduct();
+
+    //     return result;
+    // }
+
+    // async tagNameProduct(name){
+    //     const result = await repo.tagNameProduct(name);
+
+    //     return result;
+    // }
 
     async allCategory(){
         const result = await repo.allCategory();
+
+        return result;
+    }
+
+    async allBrands(){
+        const result = await repo.showBrands();
 
         return result;
     }
