@@ -44,7 +44,7 @@ exports.updateProfile = async (
   }
 
   // -------- IMAGE --------
-  if (file) {
+    if (file) {
     const [old] = await com.pool.query(
       "SELECT public_Id FROM createuser WHERE email = ?",
       [tokenEmail]

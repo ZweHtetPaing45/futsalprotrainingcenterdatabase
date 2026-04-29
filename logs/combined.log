@@ -418,3 +418,65 @@ JOIN product_tags p' at line 12
 2026-04-24 14:38:02 [32minfo[39m:: Server is running on port 5001
 2026-04-24 14:46:00 [32minfo[39m:: Server is running on port 5001
 2026-04-24 14:47:46 [32minfo[39m:: Server is running on port 5001
+2026-04-24 22:56:19 [32minfo[39m:: Server is running on port 5001
+2026-04-24 22:56:56 [31merror[39m:: jwt expired
+2026-04-24 23:02:03 [31merror[39m:: Not enough stock for product ID: 84
+2026-04-24 23:02:17 [31merror[39m:: jwt expired
+2026-04-24 23:02:37 [31merror[39m:: jwt expired
+2026-04-25 10:03:31 [32minfo[39m:: Server is running on port 5001
+2026-04-25 10:11:13 [31merror[39m:: Invalid session
+2026-04-25 10:11:26 [31merror[39m:: Invalid session
+2026-04-25 10:11:43 [31merror[39m:: Invalid session
+2026-04-26 13:21:25 [32minfo[39m:: Server is running on port 5001
+2026-04-28 12:11:50 [32minfo[39m:: Server is running on port 5001
+2026-04-28 12:12:19 [31merror[39m:: User not found
+2026-04-28 12:12:32 [31merror[39m:: User not found
+2026-04-28 20:22:40 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:25:30 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:33:53 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:37:15 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:37:36 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:38:06 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:40:28 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:40:48 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:41:50 [31merror[39m:: User already exist
+2026-04-28 20:46:21 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:54:48 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:56:02 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:57:50 [32minfo[39m:: Server is running on port 5001
+2026-04-28 20:58:21 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:01:09 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:02:41 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:04:38 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:06:27 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:09:17 [31merror[39m:: User creation failed
+2026-04-28 21:10:16 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:10:56 [31merror[39m:: User creation failed
+2026-04-28 21:11:24 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:12:06 [31merror[39m:: User creation failed
+2026-04-28 21:13:27 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:15:17 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:17:05 [32minfo[39m:: Server is running on port 5001
+2026-04-28 21:26:03 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:21:01 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:28:03 [31merror[39m:: jwt expired
+2026-04-29 23:34:58 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:36:30 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:46:57 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:52:21 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:55:30 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:55:55 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:56:31 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:57:35 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:58:09 [32minfo[39m:: Server is running on port 5001
+2026-04-29 23:59:53 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:01:52 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:07:38 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:08:16 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:09:26 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:10:30 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:10:58 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:11:11 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:11:26 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:11:42 [32minfo[39m:: Server is running on port 5001
+2026-04-30 00:12:02 [32minfo[39m:: Server is running on port 5001

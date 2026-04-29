@@ -43,7 +43,7 @@ class Services {
             expire: Date.now() + 5 * 60 * 1000
         };
 
-        console.log(otpStore);
+        console.log('otpStore',otpStore);
 
         await transporter.sendMail({
             from: com.env.email_user,
@@ -86,9 +86,11 @@ class Services {
 
         const result = await repo.createUser(record.name,record.email,record.phone,record.dateOfBirth,record.password,record.image_url);
 
+        console.log('Result Id',result);
+
         if(!result)throw new AppError('User creation failed', 500);
 
-        const token = util.generateToken({name: record.name, email: record.email, phone: record.phone});
+        const token = util.generateToken({id: result,name: record.name, email: record.email, phone: record.phone});
 
         delete otpStore[tempToken];
 
@@ -111,7 +113,7 @@ class Services {
             throw new Error('Invalid password');
         }
 
-        const token = util.generateToken({name: user.name, emailOrphone: emailOrphone});
+        const token = util.generateToken({id : user.id,name: user.name, emailOrphone: emailOrphone});
 
         return token;
 

@@ -27,7 +27,6 @@ const updateProfileSchema = joi.object({
     address: joi.string().min(1).max(255).required()
 });
 
-
 const showCategoryProduct = joi.object({
     name: joi.string().min(1).max(255).required()
 })
