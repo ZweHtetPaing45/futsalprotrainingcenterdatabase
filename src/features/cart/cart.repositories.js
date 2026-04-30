@@ -60,8 +60,8 @@ exports.order = async (user_id,customer_name,phone,email,delivery_address,remark
 
     const tax_id  = tax[0].id;
 
-    const [order] = await com.pool.query('insert into mobile_order (user_id,payment_id,tax_id,customer_name,phone,email,delivery_address,remark) values (?,?,?,?,?,?,?,?)',
-    [user_id,payment_method_id,tax_id,customer_name,phone,email,delivery_address,remark]);
+    const [order] = await com.pool.query('insert into mobile_order (user_id,payment_id,tax_id,customer_name,phone,email,delivery_address,remark,mobile_image_url,mobile_public_id) values (?,?,?,?,?,?,?,?,?,?)',
+    [user_id,payment_method_id,tax_id,customer_name,phone,email,delivery_address,remark,imageUrl,publicId]);
 
     const orderId = order.insertId;
 
