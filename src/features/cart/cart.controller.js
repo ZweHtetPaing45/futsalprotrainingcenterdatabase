@@ -56,6 +56,22 @@ class cartOrderController{
 
     }
 
+    async showPayment(req,res,next){
+        try{
+
+            const result = await services.showPayment();
+
+            res.status(200).json({
+                success:true,
+                message:'Payment List',
+                data:result
+            });
+
+        }catch(error){
+            next(error);
+        }
+    }
+
 }
 
 module.exports = new cartOrderController();

@@ -39,6 +39,14 @@ class cartOrderService{
         return result;
     }
 
+    async showPayment(){
+
+        const result = await repo.showPayment();
+
+        return result;
+
+    }
+
 }
 
 module.exports = new cartOrderService();

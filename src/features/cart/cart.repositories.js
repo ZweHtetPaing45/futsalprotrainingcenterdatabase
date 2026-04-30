@@ -248,3 +248,14 @@ exports.orderList = async (userId)=>{
 
     return result1;
 }
+
+exports.showPayment = async ()=>{
+
+    const [result] = await com.pool.query('select id,payment_method,payment_name,payment_image_url,payment_number from payment');
+
+    if(!result)throw new AppError('Payment Error',400);
+    if(result.length === 0)throw new AppError('Payment length is 0',400);
+
+    return result;
+
+}
