@@ -196,14 +196,16 @@ console.log('prindOrder',prindOrder);
 
 }
 
-
 exports.orderList = async (userId)=>{
 
     const [result] = await com.pool.query(
-                    `SELECT 
+                    `SELECT
                         o.id AS order_id,
                         o.customer_name,
                         o.total_amount,
+                        o.phone,
+                        o.email,
+                        o.delivery_address,
                         p2.payment_method,
                         t.tax,
                         o.order_status,
@@ -229,6 +231,9 @@ exports.orderList = async (userId)=>{
                 order_id: row.order_id,
                 create_at: row.create_at,
                 order_status: row.order_status,
+                email: row.email,
+                phone: row.phone,
+                delivery_address: row.delivery_address,
                 customer_name: row.customer_name,
                 items: [],
                 Sub_total: row.sub_total,

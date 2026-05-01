@@ -140,3 +140,4 @@ JOIN product_tags p' at line 12
 2026-04-28 21:10:56 [31merror[39m:: User creation failed
 2026-04-28 21:12:06 [31merror[39m:: User creation failed
 2026-04-29 23:28:03 [31merror[39m:: jwt expired
+2026-05-01 16:44:18 [31merror[39m:: User not found
