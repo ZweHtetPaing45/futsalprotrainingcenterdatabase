@@ -144,6 +144,7 @@ exports.order = async (user_id,customer_name,phone,email,delivery_address,remark
                         o.total_amount,
                         p2.payment_method,
                         t.tax,
+                        o.order_status,
                         p.name AS product_name,
                         oi.quantity,
                         oi.price,
@@ -169,6 +170,7 @@ console.log('prindOrder',prindOrder);
                 grouped[row.order_id] = {
                 order_id: row.order_id,
                 create_at: row.create_at,
+                order_status: row.order_status,
                 customer_name: row.customer_name,
                 items: [],
                 Sub_total: row.sub_total,
@@ -204,6 +206,7 @@ exports.orderList = async (userId)=>{
                         o.total_amount,
                         p2.payment_method,
                         t.tax,
+                        o.order_status,
                         p.name AS product_name,
                         oi.quantity,
                         oi.price,
@@ -225,6 +228,7 @@ exports.orderList = async (userId)=>{
                 grouped[row.order_id] = {
                 order_id: row.order_id,
                 create_at: row.create_at,
+                order_status: row.order_status,
                 customer_name: row.customer_name,
                 items: [],
                 Sub_total: row.sub_total,
