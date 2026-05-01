@@ -14,6 +14,12 @@ exports.updateProfile = async (
   file
 ) => {
 
+  const [userId] = await com.pool.query('select id from createuser where email = ?',[tokenEmail]);
+
+  console.log(userId[0].id);
+
+  const id = userId[0].id;
+
   let query = "UPDATE createuser SET ";
   let values = [];
 
@@ -52,6 +58,8 @@ exports.updateProfile = async (
 
     const pu_id = old[0]?.public_Id;
 
+    console.log('pu_id',pu_id);
+
     if (pu_id) {
       await uploader.delete(pu_id);
     }
@@ -88,6 +96,7 @@ exports.updateProfile = async (
     }
 
     return util.generateToken({
+      id: id,
       name: name,
       email: email || tokenEmail,
       phone: phone
