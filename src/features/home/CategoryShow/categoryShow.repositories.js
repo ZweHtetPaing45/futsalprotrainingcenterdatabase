@@ -365,5 +365,4 @@ exports.showBrands = async ()=>{
     // console.log(result);
 
     return result;
-
 }
