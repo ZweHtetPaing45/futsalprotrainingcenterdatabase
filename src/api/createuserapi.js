@@ -6,6 +6,7 @@ const changePassword = require('../features/account/profile/settings&preferences
 const tagShowProductRouter = require('../features/home/tagsShowProduct/tagshowProduct.route');
 const categoryShowRouter = require('../features/home/CategoryShow/categoryShow.route');
 const cartOrderRouter = require('../features/cart/cart.route');
+const canteenRouter = require('../features/services/canteen/canteen.route');
 
 
 router.use('/auth',routes);
@@ -15,4 +16,5 @@ router.use('/changepassword',changePassword);
 router.use('/homeshow',tagShowProductRouter);
 router.use('/homecategory',categoryShowRouter);
 router.use('/cart',cartOrderRouter);
+router.use('/canteen',canteenRouter);
 module.exports = router;
