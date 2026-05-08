@@ -6,5 +6,6 @@ const auth = require('../../middlewares/auth.middleware');
 router.post('/order',auth.authMiddle,upload.single('image'),controller.order);
 router.get('/orderlist',auth.authMiddle,controller.orderList);
 router.get('/showPayment',controller.showPayment);
+router.get('/showTax',controller.showTax);
 
 module.exports = router;

@@ -268,3 +268,14 @@ exports.showPayment = async ()=>{
     return result;
 
 }
+
+exports.showTax = async ()=>{
+
+    const [result] = await com.pool.query('select id,tax from tax');
+
+    if(!result)throw new AppError('Tax Error',400);
+    if(result.length === 0)throw new AppError('Tax length is 0',400);
+
+    return result;
+
+}

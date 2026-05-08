@@ -49,7 +49,40 @@ class Services {
             from: com.env.email_user,
             to: email,
             subject: 'OTP Verification',
-            html: `<h1>POS OTP is ${otp}</h1>`
+            html: ` <div style="
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+    background-color: rgb(242, 242, 249);
+    padding: 30px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    text-align: center;
+">
+
+    <h2 style="color: rgba(0, 89, 255, 0.834);">
+        Confirm Your Email
+    </h2>
+
+    <p>Hi <strong>Customer</strong>,</p>
+
+    <p>Here's your 6-digit confirmation code:</p>
+
+    <p style="
+        color: rgba(0, 89, 255, 0.834);
+        letter-spacing: 7px;
+        word-break: break-word;
+    ">
+        <strong style="font-size: 30px;">${otp}</strong>
+    </p>
+
+    <p>This code will expire in <strong>5 minutes</strong>.</p>
+
+    <p style="color: rgb(161, 157, 157); font-size: 14px;">
+        If you didn't request this, please ignore this email.
+    </p>
+
+</div>`
         })
 
         return {

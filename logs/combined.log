@@ -507,3 +507,8 @@ JOIN product_tags p' at line 12
 2026-05-05 13:00:24 [32minfo[39m:: Server is running on port 5001
 2026-05-05 13:04:46 [32minfo[39m:: Server is running on port 5001
 2026-05-08 10:59:09 [32minfo[39m:: Server is running on port 5001
+2026-05-09 00:15:04 [32minfo[39m:: Server is running on port 5001
+2026-05-09 00:17:17 [31merror[39m:: User already exist
+2026-05-09 00:19:47 [32minfo[39m:: Server is running on port 5001
+2026-05-09 00:21:39 [32minfo[39m:: Server is running on port 5001
+2026-05-09 00:26:11 [32minfo[39m:: Server is running on port 5001

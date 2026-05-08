@@ -47,6 +47,14 @@ class cartOrderService{
 
     }
 
+    async showTax(){
+
+        const result = await repo.showTax();
+
+        return result;
+
+    }
+
 }
 
 module.exports = new cartOrderService();
