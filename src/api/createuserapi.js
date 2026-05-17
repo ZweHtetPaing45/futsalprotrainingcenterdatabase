@@ -7,6 +7,7 @@ const tagShowProductRouter = require('../features/home/tagsShowProduct/tagshowPr
 const categoryShowRouter = require('../features/home/CategoryShow/categoryShow.route');
 const cartOrderRouter = require('../features/cart/cart.route');
 const canteenRouter = require('../features/services/canteen/canteen.route');
+const rentalRouter = require('../features/services/rentals/rental.route');
 
 
 router.use('/auth',routes);
@@ -17,4 +18,5 @@ router.use('/homeshow',tagShowProductRouter);
 router.use('/homecategory',categoryShowRouter);
 router.use('/cart',cartOrderRouter);
 router.use('/canteen',canteenRouter);
+router.use('/rental',rentalRouter);
 module.exports = router;

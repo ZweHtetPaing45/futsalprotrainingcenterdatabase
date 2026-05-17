@@ -8,7 +8,7 @@ const port = env.port || 4000;
 //38.60.216.25
 
 uploader.config({
-    baseURL: "http:/38.60.216.25:3000/api"
+    baseURL: "http:/localhost:3000/api"
 });
 
 app.listen(port,()=>{
