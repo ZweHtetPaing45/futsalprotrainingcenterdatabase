@@ -134,6 +134,32 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
 
     if(!prindOrder)throw new AppError('Admin Booking Print Data Error',400);
 
+    const [mobile_booking_time] = await com.pool.query(`
+                SELECT *
+FROM court_time_slot
+WHERE court_id = ?
+AND id NOT IN (
+
+    -- Admin booking slots
+    SELECT abts.court_time_slot_id
+    FROM admin_booking_time_slot abts
+    JOIN admin_booking ab
+        ON ab.id = abts.booking_id
+    WHERE ab.date = ?
+
+    UNION
+
+    -- Mobile booking slots
+    SELECT mrts.court_time_slot_id
+    FROM mobile_rental_time_slot mrts
+    JOIN mobile_rental_booking mrb
+        ON mrb.id = mrts.mobile_rental_booking_id
+    WHERE mrb.date = ?
+);
+        `,[court_id,date,date]);
+
+    if(!mobile_booking_time)throw new AppError('mobile Booking Time Error',400);
+
      const grouped = {};
 
             prindOrder.forEach(row => {
@@ -154,9 +180,8 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
 
             console.log('result1',result1);
 
-    return result1;
+    return {result1,mobile_booking_time};
 }
-
 
 
 }
@@ -165,13 +190,13 @@ exports.ShowVenue = async ()=>{
 
     let [result] = await com.pool.query('select id,venue_name,price,venue_image_url,available from venue');
 
-    result[0].available = result[0].available === 1 ? true : false;
-
     if(!result)throw new AppError('Failed to show venue',500);
 
     if(result.length === 0){
-        return "No venue found";
+        return [];
     };
+
+    result[0].available = result[0].available === 1 ? true : false;
 
     return result;
 }
@@ -275,9 +300,9 @@ exports.ShowCourt = async (venue_id)=>{
 
     if(!result)throw new AppError('Failed to show court',500);
 
-    if(result.length === 0){
-        return "No court found";
-    };
+    // if(result.length === 0){
+    //     return "No court found";
+    // };
 
     return result;
 
