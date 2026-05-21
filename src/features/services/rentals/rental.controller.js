@@ -85,6 +85,29 @@ class RentalController {
 
     }
 
+    async RemainBookingTimeSlot(req,res,next){
+
+        try{
+
+            const court_id = req.params.court_id;
+            const date = req.params.date;
+
+            const result = await service.RemainBookingTimeSlot(court_id,date);
+
+            if(result){
+                res.status(200).json({
+                    success: true,
+                    message: 'Remain booking time slot shown successfully',
+                    data: result
+                });
+            }
+
+        }catch(error){
+            next(error);
+        }
+
+    }
+
 
 }
 
