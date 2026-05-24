@@ -17,13 +17,13 @@ exports.authMiddle =async (req,res,next)=>{
 
         const decoded = util.verifyToken(token);
 
-        console.log("decoded",decoded);
+        // console.log("decoded",decoded);
 
         if(!decoded)throw new AppError('Unauthorized',500);
 
         const user = await repo.findUserId(decoded.id);
 
-        console.log("user",user);
+        // console.log("user",user);
 
         if(!user)throw new AppError('Unauthorized',500);
 
