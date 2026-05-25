@@ -8,6 +8,7 @@ class TrainingController{
 
         try{
 
+            
             const {name,gender,phone,email,age,address,emergency,training_program_id,training_level_id,schedule_id,payment_id} = req.body;
 
             const file = req.file;

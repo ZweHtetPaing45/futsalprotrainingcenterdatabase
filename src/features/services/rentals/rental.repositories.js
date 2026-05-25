@@ -4,7 +4,7 @@ const logger = require('../../../utils/logger');
 const uploader = require('@zwehtetpaing55/uploader');
 
 
-exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,remark,file,court_time_slot_ids,department,items) =>{
+exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,remark,file,court_time_slot_ids,department,items,user_id) =>{
 
     let image_url;
     let public_id;
@@ -18,7 +18,7 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
 
     }
 
-    const [booking] = await com.pool.query('insert into mobile_rental_booking (venue_id,court_id,payment_id,name,phone,remark,date,payment_image_url,payment_public_id) values(?,?,?,?,?,?,?,?,?)',[venue_id,court_id,payment_id,name,phone,remark,date,image_url,public_id]);
+    const [booking] = await com.pool.query('insert into mobile_rental_booking (venue_id,court_id,payment_id,name,phone,remark,date,payment_image_url,payment_public_id,user_id) values(?,?,?,?,?,?,?,?,?,?)',[venue_id,court_id,payment_id,name,phone,remark,date,image_url,public_id,user_id]);
 
     if(!booking)throw new AppError('Mobile rental Booking Error',400);
 
@@ -114,7 +114,8 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
     const [prindOrder] = await com.pool.query(`
          
              select 
-                a.id,
+                a.id as booking_id,
+                a.user_id as user_id,
                 p.payment_method,
                 DATE_FORMAT(a.create_at, '%Y-%m-%d %h:%i:%s %p') AS create_at,
                 DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
@@ -165,7 +166,8 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
             prindOrder.forEach(row => {
             if (!grouped[row.order_id]) {
                 grouped[row.order_id] = {
-                Registration: row.id,
+                booking_id: row.booking_id,
+                user_id: row.user_id,
                 payment_method: row.payment_method,
                 create_at: row.create_at,
                 date: row.date,
@@ -342,11 +344,12 @@ AND id NOT IN (
 }
 
 
-exports.ShowMobileBookingData = async ()=>{
+exports.ShowMobileBookingData = async (user_id)=>{
 
     const [prindOrder] = await com.pool.query(`
          
                 SELECT
+                a.user_id as user_id,
                 a.id,
                 v.venue_name,
                 c.court_name,
@@ -374,8 +377,10 @@ exports.ShowMobileBookingData = async ()=>{
                 LEFT JOIN mobile_rental_booking_equipment abe ON abe.mobile_rental_booking_id = a.id
                 LEFT JOIN equipment e ON e.id = abe.equipment_id
 
+                where a.user_id = ?
+
                 GROUP BY a.id;
-                                `);
+                                `,[user_id]);
 
     // if(!prindOrder)throw new AppError('Admin Booking Print Data Error',400);
 

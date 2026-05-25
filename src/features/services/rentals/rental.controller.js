@@ -8,6 +8,10 @@ class RentalController {
 
         try{
 
+            const user_id = req.user[0].id;
+
+            console.log(user_id);
+
             const {venue_id,court_id,payment_id,date,name,phone,remark,court_time_slot_ids,department,items} = req.body;
 
             const file = req.file;
@@ -16,7 +20,7 @@ class RentalController {
                 throw new AppError('Please fill all the fields', 400);
             }
 
-            const result = await service.RentalBooking(venue_id,court_id,payment_id,date,name,phone,remark,file,court_time_slot_ids,department,items);
+            const result = await service.RentalBooking(venue_id,court_id,payment_id,date,name,phone,remark,file,court_time_slot_ids,department,items,user_id);
 
             if(result){
                 res.status(201).json({
@@ -112,7 +116,9 @@ class RentalController {
 
         try{
 
-            const result = await service.ShowMobileBookingData();
+            const user_id = req.user[0].id;
+
+            const result = await service.ShowMobileBookingData(user_id);
 
             if(result){
                 res.status(201).json({

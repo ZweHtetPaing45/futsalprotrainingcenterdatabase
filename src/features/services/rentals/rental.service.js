@@ -3,9 +3,9 @@ const repo = require('./rental.repositories');
 
 class BookingRental {
 
-    async RentalBooking(venue_id,court_id,payment_id,date,name,phone,remark,file,court_time_slot_ids,department,items){
+    async RentalBooking(venue_id,court_id,payment_id,date,name,phone,remark,file,court_time_slot_ids,department,items,user_id){
 
-        const result = await repo.RentalBooking(venue_id,court_id,payment_id,date,name,phone,remark,file,court_time_slot_ids,department,items);
+        const result = await repo.RentalBooking(venue_id,court_id,payment_id,date,name,phone,remark,file,court_time_slot_ids,department,items,user_id);
 
         return result;
 
@@ -36,9 +36,9 @@ class BookingRental {
 
     }
 
-    async ShowMobileBookingData(){
+    async ShowMobileBookingData(user_id){
         
-        const result = await repo.ShowMobileBookingData();
+        const result = await repo.ShowMobileBookingData(user_id);
 
         return result;
 
