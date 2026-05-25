@@ -6,5 +6,6 @@ router.post('/addmobilerentalbooking',upload.single('payment_image'),controller.
 router.get('/showvenue',controller.ShowVenue);
 router.get('/showcourt/:id',controller.ShowCourt);
 router.get('/remainbookingslot/:court_id/:date',controller.RemainBookingTimeSlot);
+router.get('/showmobilebooking',controller.ShowMobileBookingData);
 
 module.exports = router;

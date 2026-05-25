@@ -36,6 +36,14 @@ class BookingRental {
 
     }
 
+    async ShowMobileBookingData(){
+        
+        const result = await repo.ShowMobileBookingData();
+
+        return result;
+
+    }
+
 }
 
 module.exports = new BookingRental();
