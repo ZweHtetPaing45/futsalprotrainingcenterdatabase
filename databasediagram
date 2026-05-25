@@ -1,0 +1,626 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+
+
+Table mobile_training_students{
+  id integer [primary key]
+  user_id integer
+  payment_id integer
+  training_program_id integer
+  training_level_id integer
+  training_schedule_time_slot_id integer
+  name varchar
+  gender enum('male','female')
+  phone varchar
+  email varchar
+  age integer
+  address text
+  payment_image_url text
+  payment_public_id text
+  create_at timestamp
+}
+
+Table admin_training_students{
+  id integer [primary key]
+  payment_id integer
+  training_program_id integer
+  training_level_id integer
+  training_schedule_time_slot_id integer
+  name varchar
+  gender enum('male','female')
+  age integer
+  phone varchar
+  email varchar
+  payment_image_url text
+  payment_public_id text
+  create_at timestamp_stamp
+}
+
+Table training_level{
+  id integer [primary key]
+  training_program_id integer
+  title_level varchar
+  description varchar
+  price integer
+  create_at timestamp
+}
+
+Table training_schedule_time_slots{
+  id integer [primary key]
+  training_schedule_day_id integer
+  training_program_id integer
+  training_level_id integer
+  start_time time
+  end_time time
+}
+
+Table training_schedule_days{
+  id integer [primary key]
+  day eum('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
+  create_at timestamp
+}
+
+Table training_program{
+  id integer [primary key]
+  category_card_image_url text
+  category_card_public_id text
+  main_program_banner_image_url text
+  main_program_banner_public_id text
+  learning_image_url text
+  learning_public_id text
+  learning_description text
+  main_title varchar
+  title varchar
+  about_title varchar
+  details text
+  create_at timestamp
+}
+
+Table training_coach{
+  id integer [primary key]
+  training_program_id integer
+  coach_image_url text
+  coach_public_id text
+  instructor_name varchar
+  biography varchar
+  create_at timestamp
+}
+
+//Venue
+
+Table court_time_slot{
+  id integer [primary key]
+  court_id integer
+  start_time time
+  end_time time
+  available boolean
+  create_at timestamp
+}
+
+Table court{
+  id integer [primary key]
+  venue_id integer
+  court_name varchar
+  hourly_price integer
+  open_at time
+  close_at time
+  about_court text
+  court_active boolean
+  create_at timestamp
+}
+
+Table court_gallery{
+  id integer [primary key]
+  court_id integer
+  court_image_url text
+  court_public_id text
+  create_at timestamp
+}
+
+Table venue{
+  id integer [primary key]
+  venue_name varchar
+  price integer
+  venue_image_url text
+  venue_public_id text
+  available boolean
+  create_at timestamp
+}
+
+Table service{
+  id integer [primary key]
+  venue_id integer
+  name varchar
+  create_at timestamp
+}
+
+Table rule{
+  id integer [primary key]
+  venue_id integer
+  name varchar
+  description text
+  create_at timestamp
+}
+
+Table pros{
+  id integer [primary key]
+  court_id integer
+  name varchar
+  detail text
+  create_at timestamp
+}
+
+Table cons{
+  id integer [primary key]
+  court_id integer
+  name varchar
+  create_at timestamp
+}
+
+Table equipment{
+  id integer [primary key]
+  venue_id integer
+  product_name varchar
+  rental_price integer
+  qty_total integer
+  create_at timestamp
+}
+
+//Mobile_Booking
+
+Table mobile_rental_booking{
+  id integer [primary key]
+  user_id integer
+  venue_id integer
+  court_id integer
+  payment_id integer
+  name varchar
+  phone integer
+  rental integer
+  amount integer
+  remark varchar
+  date date
+  payment_image_url text
+  payment_public_id text
+  create_at timestamp
+}
+
+Table mobile_rental_time_slot{
+  id integer [primary key]
+  mobile_rental_booking_id integer
+  court_time_slot_id integer
+}
+
+Table mobile_rental_booking_equipment{
+  id integer [primary key]
+  equipment_id integer
+  mobile_rental_booking_id integer
+  quantity integer
+  department varchar
+  price integer
+  total integer
+  create_at timestamp
+}
+
+//Admin_Booking
+
+Table admin_booking{
+  id integer [primary key]
+  venue_id integer
+  court_id integer
+  payment_id integer
+  reciept_no varchar
+  price integer
+  amount integer
+  date date
+  payment_image_url varchar
+  payment_public_id varchar
+  create_at timestamp
+}
+
+Table admin_booking_time_slot{
+  id integer [ primary key]
+  booking_id integer
+  court_time_slot_id integer
+}
+
+Table admin_booking_equipment{
+  id integer [primary key]
+  booking_id integer
+  equipment_id integer
+  quantity integer
+  department varchar
+  price integer
+  total integer
+  create_at timestamp
+}
+
+
+Table roles{
+  id integer [primary key]
+  role_name varchar
+}
+
+Table staff {
+  id integer [primary key]
+  role_id integer
+  name varchar
+  email varchar
+  status enum('active','inactive')
+  password varchar
+}
+
+
+//Canteen
+
+Table canteen_order{
+  id integer [primary key]
+  payment_id integer
+  reciept_no varchar
+  payment_image_url text
+  payment_public_id text
+  amount integer
+  create_at timestamp
+}
+
+Table canteen_order_item{
+  id integer [primary key]
+  canteen_order_id integer
+  canteen_product_id integer
+  price integer
+  total integer
+  quantity integer
+  create_at timestamp
+}
+
+Table canteen_category{
+  id interger [primary key]
+  name varchar
+  create_at timestamp
+}
+
+Table canteen_products{
+  id integer [primary key]
+  category_id integer
+  name varchar
+  price varchar
+  image_url text
+  public_url text
+  create_at timestamp
+  available bool
+}
+
+
+Table Enrollment {
+  id integer [primary key]
+  user_id int
+  name varchar
+  gender varchar
+  phone varchar
+  email varchar
+  age integer
+  address varchar
+  emergencyContentNumber varchar
+  courseSelection varchar
+  trainingLevel varchar
+  trainingSchedule varchar
+}
+
+Table createuser {
+  id integer [primary key]
+  name varchar
+  email varchar
+  phone varchar
+  dateOfBirth varchar
+  password varchar
+  image_url text
+  address varchar
+  public_Id varchar
+  created_at timestamp
+}
+
+Table tax {
+  id integer [primary key]
+  tax integer
+  create_at timestamp
+}
+
+Table payment {
+  id integer [primary key]
+  payment_method varchar
+  payment_name varchar
+  payment_image_url text
+  payment_public_id text
+  payment_number varchar
+  create_at timestamp
+}
+
+Table mobile_order {
+  id integer [primary key]
+  user_id integer
+  payment_id integer
+  tax_id integer
+  customer_name varchar
+  phone varchar
+  email varchar
+  delivery_address text
+  remark text
+  total_amount integer
+  delivery_fee integer
+  order_status varchar
+  sub_total int
+  create_at timestamp
+}
+
+Table admin_order{
+  id integer [primary key]
+  payment_id integer
+  tax_id integer
+  amount integer
+  local_image_url text
+  local_public_id text
+  reciept_no varchar
+  create_at timestamp
+}
+
+Table admin_order_items{
+  id integer [primary key]
+  admin_order_id integer
+  product_id integer
+  quantity integer
+  price integer
+  total integer
+  create_at timestamp
+}
+
+Table mobile_order_items{
+  id integer [primary key]
+  order_id integer
+  product_id integer
+  quantity integer
+  price integer
+  total integer
+  create_at timestamp
+}
+
+Table categories {
+  id integer [primary key]
+  name varchar
+  image_url text
+  public_id text
+  crated_at timestamp
+}
+
+Table brands {
+  id integer [primary key]
+  name varchar
+  create_at timestamp
+}
+
+
+Table tags {
+  id integer [primary key]
+  name varchar
+}
+
+Table products {
+  id integer [primary key]
+  name varchar
+  category_id integer
+  brand_id integer
+  cost integer
+  price int
+  description text
+  warranty varchar
+  rating varchar
+  made varchar
+  create_at timestamp
+}
+
+Table product_variants {
+  id integer [primary key]
+  product_id integer
+  color varchar
+  size varchar
+  type varchar
+  weight varchar
+  stock int
+  date date
+  create_at timestamp
+}
+
+
+Table product_images {
+  id integer [primary key]
+  product_id integer
+  image_url text
+  public_id text
+  create_at timestamp
+}
+
+
+Table product_tags {
+  product_id integer [primary key]
+  tag_id integer [primary key]
+}
+// Table posts {
+//   id integer [primary key]
+//   title varchar
+//   body text [note: 'Content of the post']
+//   user_id integer [not null]
+//   status varchar
+//   created_at timestamp
+// }
+
+// Ref user_posts: posts.user_id > users.id // many-to-one
+
+// Ref: users.id < follows.following_user_id
+
+// Ref: users.id < follows.followed_user_id
+
+// Records users(id, username, role) {
+//   0, 'Alice', 'admin'
+//   1, 'Bob', 'moderator'
+//   2, 'Candice', 'moderator'
+//   3, 'David', 'member'
+// }
+
+// Records follows(following_user_id, followed_user_id, created_at) {
+//   1, 0, '2026-01-01'
+//   3, 2, '2026-02-28'
+// }
+
+// Records posts(id, title, user_id) {
+//   0, 'Welcome to the forum!', 0
+//   1, 'Guidelines', 1
+//   2, 'Hello all!', 3
+// }
+
+
+Ref: "createuser"."id" < "mobile_order"."id"
+
+Ref: "brands"."id" < "products"."id"
+
+Ref: "categories"."id" < "products"."id"
+
+Ref: "products"."id" < "product_variants"."id"
+
+Ref: "products"."id" < "product_images"."id"
+
+Ref: "tags"."id" < "product_tags"."tag_id"
+
+Ref: "products"."id" < "product_tags"."product_id"
+
+Ref: "createuser"."id" < "Enrollment"."id"
+
+
+
+
+Ref: "products"."id" < "mobile_order_items"."product_id"
+
+Ref: "mobile_order"."id" < "mobile_order_items"."order_id"
+
+Ref: "payment"."id" < "mobile_order"."payment_id"
+
+Ref: "payment"."id" < "admin_order"."payment_id"
+
+Ref: "tax"."id" < "mobile_order"."tax_id"
+
+Ref: "tax"."id" < "admin_order"."tax_id"
+
+Ref: "admin_order"."id" < "admin_order_items"."admin_order_id"
+
+Ref: "products"."id" < "admin_order_items"."product_id"
+
+Ref: "canteen_category"."id" < "canteen_products"."category_id"
+
+Ref: "roles"."id" < "staff"."role_id"
+
+
+
+
+
+
+
+
+
+Ref: "venue"."id" < "court"."venue_id"
+
+Ref: "venue"."id" < "service"."venue_id"
+
+
+
+
+Ref: "venue"."id" < "rule"."venue_id"
+
+
+Ref: "venue"."id" < "equipment"."venue_id"
+
+Ref: "court"."id" < "court_time_slot"."court_id"
+
+Ref: "court"."id" < "court_gallery"."court_id"
+
+
+Ref: "court"."id" < "pros"."court_id"
+
+Ref: "court"."id" < "cons"."court_id"
+
+
+
+
+Ref: "admin_booking"."id" < "admin_booking_equipment"."booking_id"
+
+Ref: "admin_booking"."id" < "admin_booking_time_slot"."booking_id"
+
+Ref: "venue"."id" < "admin_booking"."venue_id"
+
+Ref: "court"."id" < "admin_booking"."court_id"
+
+
+
+Ref: "court_time_slot"."id" < "admin_booking_time_slot"."court_time_slot_id"
+
+
+Ref: "payment"."id" < "admin_booking"."payment_id"
+
+Ref: "equipment"."id" < "admin_booking_equipment"."equipment_id"
+
+
+Ref: "payment"."id" < "canteen_order"."payment_id"
+
+Ref: "canteen_order"."id" < "canteen_order_item"."canteen_order_id"
+
+Ref: "canteen_products"."id" < "canteen_order_item"."canteen_product_id"
+
+Ref: "venue"."id" < "mobile_rental_booking"."venue_id"
+
+Ref: "court"."id" < "mobile_rental_booking"."court_id"
+
+
+Ref: "mobile_rental_booking"."id" < "mobile_rental_booking_equipment"."mobile_rental_booking_id"
+
+Ref: "equipment"."id" < "mobile_rental_booking_equipment"."equipment_id"
+
+Ref: "mobile_rental_booking"."id" < "mobile_rental_time_slot"."mobile_rental_booking_id"
+
+Ref: "court_time_slot"."id" < "mobile_rental_time_slot"."court_time_slot_id"
+
+Ref: "payment"."id" < "mobile_rental_booking"."payment_id"
+
+Ref: "training_program"."id" < "training_level"."training_program_id"
+
+Ref: "training_program"."id" < "training_schedule_time_slots"."training_program_id"
+
+
+Ref: "training_program"."id" < "training_coach"."training_program_id"
+
+Ref: "training_level"."id" < "admin_training_students"."training_level_id"
+
+Ref: "payment"."id" < "admin_training_students"."payment_id"
+
+
+Ref: "training_schedule_days"."id" < "training_schedule_time_slots"."training_schedule_day_id"
+
+
+Ref: "training_program"."id" < "admin_training_students"."training_program_id"
+
+
+
+
+
+Ref: "training_level"."id" < "training_schedule_time_slots"."training_level_id"
+
+Ref: "training_schedule_time_slots"."id" < "admin_training_students"."training_schedule_time_slot_id"
+
+Ref: "createuser"."id" < "mobile_rental_booking"."user_id"
+
+Ref: "training_schedule_time_slots"."id" < "mobile_training_students"."training_schedule_time_slot_id"
+
+Ref: "training_level"."id" < "mobile_training_students"."training_level_id"
+
+Ref: "payment"."id" < "mobile_training_students"."payment_id"
+
+Ref: "training_program"."id" < "mobile_training_students"."training_program_id"
+
+Ref: "createuser"."id" < "mobile_training_students"."user_id"

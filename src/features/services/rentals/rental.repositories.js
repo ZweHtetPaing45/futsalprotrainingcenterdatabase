@@ -120,7 +120,15 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
                 DATE_FORMAT(a.create_at, '%Y-%m-%d %h:%i:%s %p') AS create_at,
                 DATE_FORMAT(a.date, '%Y-%m-%d') AS date,
                 a.rental,
-                a.amount
+                a.amount,
+
+                JSON_ARRAYAGG(  
+                    JSON_OBJECT(  
+                        'start_time', cts.start_time,  
+                        'end_time', cts.end_time  
+                    )  
+                ) AS time_slots
+
 
                 from mobile_rental_booking a
                 join payment p on p.id = a.payment_id
@@ -173,6 +181,7 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
                 date: row.date,
                 Court_Fee: row.rental,
                 Total: row.amount,
+                time_slots: row.time_slots
                 };
             }
 
@@ -231,6 +240,7 @@ exports.ShowCourt = async (venue_id)=>{
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
+                        'id', g.id,
                         'court_image_url', g.court_image_url,
                         'court_public_id', g.court_public_id
                     )
@@ -243,6 +253,7 @@ exports.ShowCourt = async (venue_id)=>{
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
+                        'id', p.id,
                         'name', p.name
                     )
                 )
@@ -254,6 +265,7 @@ exports.ShowCourt = async (venue_id)=>{
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
+                        'id', co.id,
                         'name', co.name
                     )
                 )
@@ -265,6 +277,7 @@ exports.ShowCourt = async (venue_id)=>{
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
+                        'id', s.id,
                         'name', s.name
                     )
                 )
@@ -276,6 +289,7 @@ exports.ShowCourt = async (venue_id)=>{
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
+                        'id', r.id,
                         'name', r.name,
                         'detail', r.description
                     )
@@ -363,6 +377,13 @@ exports.ShowMobileBookingData = async (user_id)=>{
 
                 JSON_ARRAYAGG(  
                     JSON_OBJECT(  
+                        'start_time', cts.start_time,  
+                        'end_time', cts.end_time  
+                    )  
+                ) AS time_slots,
+
+                JSON_ARRAYAGG(  
+                    JSON_OBJECT(  
                         'equipment', e.product_name,  
                         'quantity', abe.quantity,  
                         'price', abe.price,  
@@ -374,6 +395,8 @@ exports.ShowMobileBookingData = async (user_id)=>{
                 JOIN payment p ON p.id = a.payment_id
                 JOIN venue v ON v.id = a.venue_id
                 JOIN court c ON c.id = a.court_id
+                JOIN mobile_rental_time_slot abts ON abts.mobile_rental_booking_id = a.id
+                JOIN court_time_slot cts ON cts.id = abts.court_time_slot_id
                 LEFT JOIN mobile_rental_booking_equipment abe ON abe.mobile_rental_booking_id = a.id
                 LEFT JOIN equipment e ON e.id = abe.equipment_id
 
