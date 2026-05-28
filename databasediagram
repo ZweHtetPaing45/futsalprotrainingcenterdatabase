@@ -9,7 +9,6 @@ Table mobile_training_students{
   payment_id integer
   training_program_id integer
   training_level_id integer
-  training_schedule_time_slot_id integer
   name varchar
   gender enum('male','female')
   phone varchar
@@ -21,12 +20,18 @@ Table mobile_training_students{
   create_at timestamp
 }
 
+Table mobile_training_student_time_slots{
+  id integer [primary key]
+  mobile_training_students_id integer
+  training_schedule_time_slot_id integer
+  create_at timestamp
+}
+
 Table admin_training_students{
   id integer [primary key]
   payment_id integer
   training_program_id integer
   training_level_id integer
-  training_schedule_time_slot_id integer
   name varchar
   gender enum('male','female')
   age integer
@@ -35,6 +40,13 @@ Table admin_training_students{
   payment_image_url text
   payment_public_id text
   create_at timestamp_stamp
+}
+
+Table admin_training_student_time_slots{
+  id integer [primary key]
+  admin_training_students_id integer
+  training_schedule_time_slot_id integer
+  create_at timestamp
 }
 
 Table training_level{
@@ -606,16 +618,11 @@ Ref: "training_schedule_days"."id" < "training_schedule_time_slots"."training_sc
 Ref: "training_program"."id" < "admin_training_students"."training_program_id"
 
 
-
-
-
 Ref: "training_level"."id" < "training_schedule_time_slots"."training_level_id"
 
-Ref: "training_schedule_time_slots"."id" < "admin_training_students"."training_schedule_time_slot_id"
 
 Ref: "createuser"."id" < "mobile_rental_booking"."user_id"
 
-Ref: "training_schedule_time_slots"."id" < "mobile_training_students"."training_schedule_time_slot_id"
 
 Ref: "training_level"."id" < "mobile_training_students"."training_level_id"
 
@@ -624,3 +631,11 @@ Ref: "payment"."id" < "mobile_training_students"."payment_id"
 Ref: "training_program"."id" < "mobile_training_students"."training_program_id"
 
 Ref: "createuser"."id" < "mobile_training_students"."user_id"
+
+Ref: "admin_training_students"."id" < "admin_training_student_time_slots"."admin_training_students_id"
+
+Ref: "training_schedule_time_slots"."id" < "admin_training_student_time_slots"."training_schedule_time_slot_id"
+
+Ref: "training_schedule_time_slots"."id" < "mobile_training_student_time_slots"."training_schedule_time_slot_id"
+
+Ref: "mobile_training_students"."id" < "mobile_training_student_time_slots"."mobile_training_students_id"

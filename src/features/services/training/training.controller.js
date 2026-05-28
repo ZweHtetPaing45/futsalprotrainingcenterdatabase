@@ -8,19 +8,20 @@ class TrainingController{
 
         try{
 
+            const user_id = req.user[0].id;
             
-            const {name,gender,phone,email,age,address,emergency,training_program_id,training_level_id,schedule_id,payment_id} = req.body;
+            const {name,gender,phone,email,age,address,training_program_id,training_level_id,payment_id} = req.body;
 
             const file = req.file;
 
-            if(!name || !gender || !phone || !email || !age || !address || !emergency || !training_program_id || !training_level_id || !schedule_id || !payment_id){
+            if(!name || !gender || !phone || !email || !age || !address || !training_program_id || !training_level_id || !payment_id){
                 throw new AppError('Please fill all the fields', 400);
             }
 
             console.log('file',file);
             console.log('body',req.body);
 
-            const result = await service.TrainingStudent(name,gender,phone,email,age,address,emergency,training_program_id,training_level_id,schedule_id,payment_id,file);
+            const result = await service.TrainingStudent(name,gender,phone,email,age,address,training_program_id,training_level_id,payment_id,file,user_id);
 
             if(result){
                 res.status(201).json({
@@ -44,11 +45,13 @@ class TrainingController{
 
     }
 
-    async ShowTraining(req,res,next){
+    async ShowStudentTraining(req,res,next){
 
         try{
 
-            const result = await service.ShowTraining();
+            const user_id = req.user[0].id;
+
+            const result = await service.ShowStudentTraining(user_id);
 
             res.status(200).json({
                 success: true,
