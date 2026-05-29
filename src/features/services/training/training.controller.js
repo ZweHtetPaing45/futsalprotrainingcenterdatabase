@@ -69,7 +69,9 @@ class TrainingController{
 
         try{
 
-            const result = await service.ShowTraining();
+            const id = req.params.id;
+
+            const result = await service.ShowTraining(id);
 
             res.status(200).json({
                 success: true,
@@ -83,6 +85,23 @@ class TrainingController{
 
     }
 
+    async ShowTrainingImage(req,res,next){
+
+        try{
+
+            const result = await service.ShowTrainingImage();
+
+            res.status(200).json({
+                success: true,
+                message: 'Training images retrieved successfully',
+                data: result
+            });
+
+        }catch(error){
+            next(error);
+        }
+
+    }
 
 }
 

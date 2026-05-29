@@ -224,7 +224,7 @@ exports.ShowStudentTraining = async (user_id)=>{
 }
 
 
-exports.ShowTraining = async () => {
+exports.ShowTraining = async (id) => {
 
     const [result] = await com.pool.query(
         `SELECT 
@@ -284,7 +284,8 @@ exports.ShowTraining = async () => {
                 WHERE tst.trainning_program_id = tp.id
             ) AS schedules
 
-        FROM training_program tp`
+        FROM training_program tp where tp.id = ?`,
+        [id]
     );
 
     if (!result || result.length === 0) {
@@ -293,3 +294,12 @@ exports.ShowTraining = async () => {
 
     return result;
 };
+
+
+exports.ShowTrainingImage = async () =>{
+    const [result] = await com.pool.query('select id,main_program_banner_image_url from training_program');
+
+    if(!result)throw new AppError('Show Training Image Error',400);
+
+    return result;
+}

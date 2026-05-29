@@ -18,9 +18,17 @@ class TrainingService{
 
     }
 
-    async ShowTraining(){
+    async ShowTraining(id){
 
-        const result = await repo.ShowTraining();
+        const result = await repo.ShowTraining(id);
+
+        return result;
+
+    }
+
+    async ShowTrainingImage(){
+
+        const result = await repo.ShowTrainingImage();
 
         return result;
 
