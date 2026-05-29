@@ -9,6 +9,6 @@ router.post('/addstudenttraining',auth.authMiddle,upload.single('payment_image')
 //Get Method
 router.get('/showstudenttraining',auth.authMiddle,controller.ShowStudentTraining);
 router.get('/showtraining/:id',controller.ShowTraining);
-router.get('/showtrainingimage',controller.ShowTrainingImage);
+router.get('/showtraining',controller.ShowTrainingImage);
 
 module.exports = router;

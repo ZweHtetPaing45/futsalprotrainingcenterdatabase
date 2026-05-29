@@ -14,7 +14,7 @@ class TrainingController{
 
             const file = req.file;
 
-            if(!name || !gender || !phone || !email || !age || !address || !training_program_id || !training_level_id || !payment_id){
+            if(!name || !gender || !phone || !email || !age || !address || !training_program_id || !training_level_id ){
                 throw new AppError('Please fill all the fields', 400);
             }
 

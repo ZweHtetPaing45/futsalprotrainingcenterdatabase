@@ -8,6 +8,9 @@ exports.TrainingStudent = async (name,gender,phone,email,age,address,training_pr
     let image_url;
     let public_id;
 
+    let training_student_id;
+    let result;
+
     console.log('file in repo',file);
     console.log('payment_id in repo',payment_id);
     console.log('training_program_id in repo',training_program_id);
@@ -22,14 +25,16 @@ exports.TrainingStudent = async (name,gender,phone,email,age,address,training_pr
 
     if(file){
 
+        console.log('First');
+
         const result = await uploader.upload(file,'training_payment_image');
 
         image_url = result.image_url;
         public_id = result.public_id;
 
-    }
+    
 
-    const [result] = await com.pool.query(`
+    [result1] = await com.pool.query(`
         insert into mobile_training_students (
         user_id,
         payment_id,
@@ -47,9 +52,33 @@ exports.TrainingStudent = async (name,gender,phone,email,age,address,training_pr
             name,gender,phone,email,age,address,image_url,public_id
         ]);
 
-    if(!result)throw new AppError('Training Student Error',400);
+    if(!result1)throw new AppError('Training Student Error',400);
 
-    const training_student_id = result.insertId;
+    training_student_id = result1.insertId;
+
+    }else{
+
+        console.log('Second');
+
+        [result2] = await com.pool.query(`
+        insert into mobile_training_students (
+        user_id,
+        training_program_id,
+        training_level_id,
+        name,
+        gender,
+        phone,
+        email,
+        age,
+        address
+        ) values(?,?,?,?,?,?,?,?,?)`,[user_id,training_program_id,training_level_id,
+            name,gender,phone,email,age,address
+        ]);
+
+    if(!result2)throw new AppError('Training Student Error',400);
+
+    training_student_id = result2.insertId;
+    }
 
     console.log('training_student_id',training_student_id);
 
