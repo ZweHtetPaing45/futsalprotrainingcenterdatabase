@@ -230,7 +230,7 @@ exports.ShowTraining = async (id) => {
         `SELECT 
             tp.id,
             tp.category_card_image_url,
-            tp.main_program_banner_image_url,
+            -- tp.main_program_banner_image_url,
             tp.learning_image_url,
             tp.main_title,
             tp.title,
