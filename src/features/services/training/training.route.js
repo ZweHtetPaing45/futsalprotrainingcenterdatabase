@@ -5,6 +5,9 @@ const auth = require('../../../middlewares/auth.middleware');
 
 //Post Method
 router.post('/addstudenttraining',auth.authMiddle,upload.single('payment_image'),controller.TrainingStudent);
+
+//Get Method
 router.get('/showstudenttraining',auth.authMiddle,controller.ShowStudentTraining);
+router.get('/showtraining',controller.ShowTraining);
 
 module.exports = router;

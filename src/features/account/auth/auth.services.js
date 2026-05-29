@@ -137,13 +137,13 @@ class Services {
         const user = await repo.emaliOrPhoneUserfind(emailOrphone);
 
         if(!user){
-            throw new AppError('User not found', 404);
+            return 'User not found';
         }
 
         const math = await bcrypt.compare(password,user.password);
 
         if(!math){
-            throw new Error('Invalid password');
+            return 'Invalid password';
         }
 
         const token = util.generateToken({id : user.id,name: user.name, emailOrphone: emailOrphone});

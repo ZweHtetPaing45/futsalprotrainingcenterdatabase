@@ -65,4 +65,25 @@ class TrainingController{
 
     }
 
-}module.exports = new TrainingController();
+           async ShowTraining(req,res,next){
+
+        try{
+
+            const result = await service.ShowTraining();
+
+            res.status(200).json({
+                success: true,
+                message: 'Training programs retrieved successfully',
+                data: result
+            });
+
+        }catch(error){
+            next(error);
+        }
+
+    }
+
+
+}
+
+module.exports = new TrainingController();

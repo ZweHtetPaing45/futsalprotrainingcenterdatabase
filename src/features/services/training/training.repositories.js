@@ -222,3 +222,74 @@ exports.ShowStudentTraining = async (user_id)=>{
     }));
 
 }
+
+
+exports.ShowTraining = async () => {
+
+    const [result] = await com.pool.query(
+        `SELECT 
+            tp.id,
+            tp.category_card_image_url,
+            tp.main_program_banner_image_url,
+            tp.learning_image_url,
+            tp.main_title,
+            tp.title,
+            tp.about_title,
+            tp.details,
+            tp.learning_description,
+            tp.course_name,
+
+            -- training levels
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', tl.id,
+                        'title_level', tl.title_level,
+                        'price', tl.price
+                    )
+                )
+                FROM training_level tl
+                WHERE tl.training_program_id = tp.id
+            ) AS levels,
+
+            -- coaches
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', tc.id,
+                        'instructor_name', tc.instructor_name,
+                        'biography', tc.biography,
+                        'coach_image_url', tc.coach_image_url
+                    )
+                )
+                FROM training_coach tc
+                WHERE tc.training_program_id = tp.id
+            ) AS coaches,
+
+            -- schedules
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'slot_id', tst.id,
+                        'day_id', tsd.id,
+                        'day', tsd.day,
+                        'training_level_id', tst.training_level_id,
+                        'start_time', tst.start_time,
+                        'end_time', tst.end_time
+                    )
+                )
+                FROM training_schedule_time_slots tst
+                JOIN training_schedule_days tsd
+                    ON tsd.id = tst.training_schedule_days_id
+                WHERE tst.trainning_program_id = tp.id
+            ) AS schedules
+
+        FROM training_program tp`
+    );
+
+    if (!result || result.length === 0) {
+        throw new AppError('Show Training Error', 400);
+    }
+
+    return result;
+};

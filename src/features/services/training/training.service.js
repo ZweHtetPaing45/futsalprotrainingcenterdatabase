@@ -18,6 +18,14 @@ class TrainingService{
 
     }
 
+    async ShowTraining(){
+
+        const result = await repo.ShowTraining();
+
+        return result;
+
+    }
+
 }
 
 module.exports = new TrainingService();
