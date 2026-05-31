@@ -149,7 +149,8 @@ exports.order = async (user_id,customer_name,phone,email,delivery_address,remark
                         oi.quantity,
                         oi.price,
                         oi.total,
-                        CONVERT_TZ(o.create_at, '+00:00','+06:30') AS create_at,
+                        DATE_FORMAT(o.create_at, '%Y-%m-%d') AS date_only,
+                        DATE_FORMAT(o.create_at, '%h:%i:%s %p') AS time_only,
                         o.delivery_fee,
                         o.sub_total
                     FROM mobile_order o
@@ -169,7 +170,8 @@ console.log('prindOrder',prindOrder);
             if (!grouped[row.order_id]) {
                 grouped[row.order_id] = {
                 order_id: row.order_id,
-                create_at: row.create_at,
+                Date: row.date_only,
+                Time: row.time_only,
                 order_status: row.order_status,
                 customer_name: row.customer_name,
                 items: [],
@@ -213,7 +215,8 @@ exports.orderList = async (userId)=>{
                         oi.quantity,
                         oi.price,
                         oi.total,
-                        CONVERT_TZ(o.create_at, '+00:00','+06:30') AS create_at,
+                        DATE_FORMAT(tsts.create_at, '%Y-%m-%d') AS date_only,
+                        DATE_FORMAT(tsts.create_at, '%h:%i:%s %p') AS time_only,
                         o.delivery_fee,
                         o.sub_total
                     FROM mobile_order o
@@ -229,7 +232,8 @@ exports.orderList = async (userId)=>{
             if (!grouped[row.order_id]) {
                 grouped[row.order_id] = {
                 order_id: row.order_id,
-                create_at: row.create_at,
+                Date: row.date_only,
+                Time: row.time_only,
                 order_status: row.order_status,
                 email: row.email,
                 phone: row.phone,

@@ -111,6 +111,8 @@ exports.TrainingStudent = async (name,gender,phone,email,age,address,training_pr
         ats.phone,
         ats.email,
         ats.payment_image_url,
+        DATE_FORMAT(ats.create_at, '%Y-%m-%d') AS date_only,
+        DATE_FORMAT(ats.create_at, '%h:%i:%s %p') AS time_only,
 
         tp.category_card_image_url AS category_card_image_url,
         tp.course_name,
@@ -120,7 +122,6 @@ exports.TrainingStudent = async (name,gender,phone,email,age,address,training_pr
         tsts.training_schedule_days_id,
         tsts.start_time,
         tsts.end_time,
-        tsts.create_at,
         tsts.training_level_id,
 
         tl.title_level,
@@ -153,6 +154,8 @@ if(findStudent.length === 0){
 }
 
 const studentInfo = {
+    Data: findStudent[0].date_only,
+    Time: findStudent[0].time_only,
     name: findStudent[0].name,
     gender: findStudent[0].gender,
     age: findStudent[0].age,
@@ -169,7 +172,6 @@ const scheduleData = findStudent.map(item => ({
     training_schedule_days_id: item.training_schedule_days_id,
     start_time: item.start_time,
     end_time: item.end_time,
-    create_at: item.create_at,
     training_level_id: item.training_level_id,
     title_level: item.title_level,
     day: item.day
@@ -193,6 +195,8 @@ exports.ShowStudentTraining = async (user_id)=>{
             ats.phone,
             ats.email,
             ats.payment_image_url,
+            DATE_FORMAT(ats.create_at, '%Y-%m-%d') AS date_only,
+            DATE_FORMAT(ats.create_at, '%h:%i:%s %p') AS time_only,
 
             tp.course_name,
 
@@ -238,6 +242,8 @@ exports.ShowStudentTraining = async (user_id)=>{
 
     return rows.map(row => ({
         studentInfo: {
+            Date: row.date_only,
+            Time: row.time_only,
             id: row.id,
             name: row.name,
             gender: row.gender,
