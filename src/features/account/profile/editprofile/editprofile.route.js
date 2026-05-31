@@ -4,6 +4,8 @@ const auth = require('../../../../middlewares/auth.middleware');
 const upload = require('../../../../middlewares/multer');
 const {createValidate,updateProfileSchema} = require('../../../../middlewares/createUserValidation');
 
+//Put Method
 router.put('/update',auth.authMiddle,upload.single('image'),controller.editProfile);
+
 
 module.exports = router;
