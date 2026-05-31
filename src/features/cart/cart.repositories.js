@@ -215,8 +215,8 @@ exports.orderList = async (userId)=>{
                         oi.quantity,
                         oi.price,
                         oi.total,
-                        DATE_FORMAT(tsts.create_at, '%Y-%m-%d') AS date_only,
-                        DATE_FORMAT(tsts.create_at, '%h:%i:%s %p') AS time_only,
+                        DATE_FORMAT(o.create_at, '%Y-%m-%d') AS date_only,
+                        DATE_FORMAT(o.create_at, '%h:%i:%s %p') AS time_only,
                         o.delivery_fee,
                         o.sub_total
                     FROM mobile_order o
