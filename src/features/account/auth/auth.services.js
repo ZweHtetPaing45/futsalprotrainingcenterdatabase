@@ -151,6 +151,97 @@ class Services {
         return token;
 
     }
+
+    async forgetPassword(email){
+
+         const user = await repo.emaliOrPhoneUserfind(email);
+
+         if(!user){
+            return 'User not found';
+         }
+
+         const otp = generateOTP();
+        console.log('OTP:',otp);
+
+        const tempToken = util.generateToken({email:user.email});
+
+
+        otpStore[tempToken]= {
+            userId: user.id,
+            email,
+            otp,
+            expire: Date.now() + 5 * 60 * 1000
+        };
+
+        await transporter.sendMail({
+            from: com.env.email_user,
+            to: email,
+            subject: 'OTP Verification',
+            html: ` <div style="
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+    background-color: rgb(242, 242, 249);
+    padding: 30px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    text-align: center;
+">
+
+    <h2 style="color: rgba(0, 89, 255, 0.834);">
+        Confirm Your Email
+    </h2>
+
+    <p>Hi <strong>Customer</strong>,</p>
+
+    <p>Here's your 6-digit confirmation code:</p>
+
+    <p style="
+        color: rgba(0, 89, 255, 0.834);
+        letter-spacing: 7px;
+        word-break: break-word;
+    ">
+        <strong style="font-size: 30px;">${otp}</strong>
+    </p>
+
+    <p>This code will expire in <strong>5 minutes</strong>.</p>
+
+    <p style="color: rgb(161, 157, 157); font-size: 14px;">
+        If you didn't request this, please ignore this email.
+    </p>
+
+</div>`
+        });
+
+        return {
+            message: "OTP sent",
+            tempToken
+        }
+
+    }
+
+    async verifyForgetPassword(tempToken,otp){
+        
+        const record = otpStore[tempToken];
+
+        console.log("Record",record);
+
+        if(!record)throw new AppError('Invalid session',400);
+
+        if(Date.now()>record.expire){
+            throw new AppError('OTP expired',400);
+        }
+
+        if(record.otp !== otp){
+            throw new AppError('Invalid OTP',400);
+        }
+
+        const token = util.generateToken({id: record.userId,email: record.email});
+
+        delete otpStore[tempToken];
+
+        return token; 
+    }
 }
 
 module.exports = new Services();

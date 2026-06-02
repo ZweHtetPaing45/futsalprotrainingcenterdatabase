@@ -70,6 +70,66 @@ class AuthController{
             next(error);
         }
     }
+
+    async forgetPassword(req,res,next){
+
+        try{
+
+            const {email} = req.body;
+
+            if(!email){
+                throw new AppError('All fields are required', 400);
+            }
+
+            const result = await services.forgetPassword(email);
+
+            if(result){
+                res.status(201).json({
+                    status: 'success',
+                    message: result
+                });
+            }else{
+                res.status(400).json({
+                    status: 'fail',
+                    message: result
+                });
+            }
+
+        }catch(error){
+            next(error);
+        }
+
+    }
+
+    async verifyOtpForForgetPassword(req,res,next){
+
+        try{
+
+            const {otp,tempToken} = req.body;
+
+            if(!otp || !tempToken){
+                throw new AppError('All fields are required',400);
+            }
+
+            const token = await services.verifyForgetPassword(tempToken,otp);
+
+            if(token){
+                res.status(201).json({
+                    status: 'success',
+                    token
+                });
+            }else{
+                res.status(400).json({
+                    status: 'fail',
+                    message: 'Invalid OTP'
+                });
+            }
+
+        }catch(error){
+            next(error);
+        }
+
+    }
 }
 
 module.exports = new AuthController();
