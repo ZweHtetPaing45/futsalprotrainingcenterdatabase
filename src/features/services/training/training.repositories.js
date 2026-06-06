@@ -264,8 +264,6 @@ exports.ShowTraining = async (id) => {
     const [result] = await com.pool.query(
         `SELECT 
             tp.id,
-            tp.category_card_image_url,
-           -- tp.main_program_banner_image_url,
             tp.course_name,
 
             -- training levels
@@ -284,7 +282,8 @@ exports.ShowTraining = async (id) => {
                         'instsuctor_name', tl.instsuctor_name,
                         'biography' , tl.biography,
                         'learning_image_url', tl.learning_image_url,
-                        'learning_description', tl.learning_description
+                        'learning_description', tl.learning_description,
+                        'category_card_image_url', tl.category_card_image_url
                     )
                 )
                 FROM training_level tl
@@ -319,7 +318,6 @@ exports.ShowTraining = async (id) => {
 
     return result;
 };
-
 
 exports.ShowTrainingImage = async () =>{
     const [result] = await com.pool.query('select id,main_program_banner_image_url from training_program');
