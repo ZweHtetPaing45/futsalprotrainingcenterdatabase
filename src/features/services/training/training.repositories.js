@@ -266,8 +266,6 @@ exports.ShowTraining = async (id) => {
             tp.id,
             tp.category_card_image_url,
            -- tp.main_program_banner_image_url,
-            tp.learning_image_url,
-            tp.learning_description,
             tp.course_name,
 
             -- training levels
@@ -284,7 +282,9 @@ exports.ShowTraining = async (id) => {
                         'details', case when tl.optional_active = 1 then tl.details else null end,
                         'coach_image_url', tl.coach_image_url,
                         'instsuctor_name', tl.instsuctor_name,
-                        'biography' , tl.biography
+                        'biography' , tl.biography,
+                        'learning_image_url', tl.learning_image_url,
+                        'learning_description', tl.learning_description
                     )
                 )
                 FROM training_level tl

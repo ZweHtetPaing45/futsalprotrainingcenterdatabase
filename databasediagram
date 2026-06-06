@@ -62,6 +62,13 @@ Table training_level{
   about_title varchar
   details text
   optional_active boolean
+  coach_image_url text
+  coach_public_id text
+  instsuctor_name varchar
+  biography varchar
+  learning_image_url text
+  learning_public_id text
+  learning_description text
   create_at timestamp
 }
 
@@ -82,26 +89,24 @@ Table training_schedule_days{
 
 Table training_program{
   id integer [primary key]
+  course_name varchar
   category_card_image_url text
   category_card_public_id text
   main_program_banner_image_url text
   main_program_banner_public_id text
-  learning_image_url text
-  learning_public_id text
-  learning_description text
   create_at timestamp
 }
 
 
-Table training_coach{
-  id integer [primary key]
-  training_program_id integer
-  coach_image_url text
-  coach_public_id text
-  instructor_name varchar
-  biography varchar
-  create_at timestamp
-}
+// Table training_coach{
+//   id integer [primary key]
+//   training_program_id integer
+//   coach_image_url text
+//   coach_public_id text
+//   instructor_name varchar
+//   biography varchar
+//   create_at timestamp
+// }
 
 //Venue
 
@@ -609,7 +614,7 @@ Ref: "training_program"."id" < "training_level"."training_program_id"
 Ref: "training_program"."id" < "training_schedule_time_slots"."training_program_id"
 
 
-Ref: "training_program"."id" < "training_coach"."training_program_id"
+// Ref: "training_program"."id" < "training_coach"."training_program_id"
 
 Ref: "training_level"."id" < "admin_training_students"."training_level_id"
 
