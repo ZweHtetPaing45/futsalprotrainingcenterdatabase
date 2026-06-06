@@ -281,26 +281,16 @@ exports.ShowTraining = async (id) => {
                         'main_title', case when tl.optional_active = 1 then tl.main_title else null end,
                         'title', case when tl.optional_active = 1 then tl.title else null end,
                         'about_title', case when tl.optional_active = 1 then tl.about_title else null end,
-                        'details', case when tl.optional_active = 1 then tl.details else null end
+                        'details', case when tl.optional_active = 1 then tl.details else null end,
+                        'coach_image_url', tl.coach_image_url,
+                        'instsuctor_name', tl.instsuctor_name,
+                        'biography' , tl.biography
                     )
                 )
                 FROM training_level tl
                 WHERE tl.training_program_id = tp.id
             ) AS levels,
 
-            -- coaches
-            (
-                SELECT JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        'id', tc.id,
-                        'instructor_name', tc.instructor_name,
-                        'biography', tc.biography,
-                        'coach_image_url', tc.coach_image_url
-                    )
-                )
-                FROM training_coach tc
-                WHERE tc.training_program_id = tp.id
-            ) AS coaches,
 
             -- schedules
             (
@@ -329,6 +319,7 @@ exports.ShowTraining = async (id) => {
 
     return result;
 };
+
 
 exports.ShowTrainingImage = async () =>{
     const [result] = await com.pool.query('select id,main_program_banner_image_url from training_program');
