@@ -17,6 +17,7 @@ Table mobile_training_students{
   address text
   payment_image_url text
   payment_public_id text
+  source varchar
   create_at timestamp
 }
 
@@ -39,6 +40,7 @@ Table admin_training_students{
   email varchar
   payment_image_url text
   payment_public_id text
+  source varchar
   create_at timestamp_stamp
 }
 
@@ -55,6 +57,11 @@ Table training_level{
   title_level varchar
   description varchar
   price integer
+  main_title varchar
+  title varchar
+  about_title varchar
+  details text
+  optional_active boolean
   create_at timestamp
 }
 
@@ -82,12 +89,9 @@ Table training_program{
   learning_image_url text
   learning_public_id text
   learning_description text
-  main_title varchar
-  title varchar
-  about_title varchar
-  details text
   create_at timestamp
 }
+
 
 Table training_coach{
   id integer [primary key]

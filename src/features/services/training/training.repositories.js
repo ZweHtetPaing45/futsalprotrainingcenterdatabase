@@ -265,12 +265,8 @@ exports.ShowTraining = async (id) => {
         `SELECT 
             tp.id,
             tp.category_card_image_url,
-            -- tp.main_program_banner_image_url,
+           -- tp.main_program_banner_image_url,
             tp.learning_image_url,
-            tp.main_title,
-            tp.title,
-            tp.about_title,
-            tp.details,
             tp.learning_description,
             tp.course_name,
 
@@ -280,7 +276,12 @@ exports.ShowTraining = async (id) => {
                     JSON_OBJECT(
                         'id', tl.id,
                         'title_level', tl.title_level,
-                        'price', tl.price
+                        'price', tl.price,
+                        'description', tl.description,
+                        'main_title', case when tl.optional_active = 1 then tl.main_title else null end,
+                        'title', case when tl.optional_active = 1 then tl.title else null end,
+                        'about_title', case when tl.optional_active = 1 then tl.about_title else null end,
+                        'details', case when tl.optional_active = 1 then tl.details else null end
                     )
                 )
                 FROM training_level tl
@@ -319,17 +320,15 @@ exports.ShowTraining = async (id) => {
                 WHERE tst.trainning_program_id = tp.id
             ) AS schedules
 
-        FROM training_program tp where tp.id = ?`,
-        [id]
+        FROM training_program tp where tp.id = ?`, [id]
     );
 
     if (!result || result.length === 0) {
-        throw new AppError('Show Training Error', 400);
+        return [];
     }
 
     return result;
 };
-
 
 exports.ShowTrainingImage = async () =>{
     const [result] = await com.pool.query('select id,main_program_banner_image_url from training_program');
