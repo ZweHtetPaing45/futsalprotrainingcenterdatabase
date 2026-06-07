@@ -236,8 +236,8 @@ exports.ShowStudentTraining = async (user_id)=>{
         GROUP BY ats.id
         `,[user_id]);
 
-   if (!rows.length) {
-        throw new AppError('Failed to find student', 500);
+    if(rows.length === 0){
+        return [];
     }
 
     return rows.map(row => ({
