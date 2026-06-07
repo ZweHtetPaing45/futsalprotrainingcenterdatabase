@@ -9,6 +9,7 @@ const cartOrderRouter = require('../features/cart/cart.route');
 const canteenRouter = require('../features/services/canteen/canteen.route');
 const rentalRouter = require('../features/services/rentals/rental.route');
 const trainingRouter = require('../features/services/training/training.route');
+const contactusRouter = require('../features/account/profile/contactus/contactus.route');
 
 router.use('/auth',routes);
 router.use('/myprofile',myprofile);
@@ -20,7 +21,7 @@ router.use('/cart',cartOrderRouter);
 router.use('/canteen',canteenRouter);
 router.use('/rental',rentalRouter);
 router.use('/training',trainingRouter);
-
+router.use('/contactus',contactusRouter);
 
 
 module.exports = router;
