@@ -69,6 +69,8 @@ Table training_level{
   learning_image_url text
   learning_public_id text
   learning_description text
+  category_card_image_url text
+  category_card_public_id text
   create_at timestamp
 }
 
@@ -90,8 +92,6 @@ Table training_schedule_days{
 Table training_program{
   id integer [primary key]
   course_name varchar
-  category_card_image_url text
-  category_card_public_id text
   main_program_banner_image_url text
   main_program_banner_public_id text
   create_at timestamp

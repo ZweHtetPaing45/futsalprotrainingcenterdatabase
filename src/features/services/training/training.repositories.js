@@ -114,7 +114,6 @@ exports.TrainingStudent = async (name,gender,phone,email,age,address,training_pr
         DATE_FORMAT(ats.create_at, '%Y-%m-%d') AS date_only,
         DATE_FORMAT(ats.create_at, '%h:%i:%s %p') AS time_only,
 
-        tp.category_card_image_url AS category_card_image_url,
         tp.course_name,
 
         tsts.id,
@@ -125,6 +124,7 @@ exports.TrainingStudent = async (name,gender,phone,email,age,address,training_pr
         tsts.training_level_id,
 
         tl.title_level,
+        tl.category_card_image_url As category_card_image_url,
         tsd.day
 
     FROM mobile_training_students ats
