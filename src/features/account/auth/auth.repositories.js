@@ -98,3 +98,24 @@ exports.emaliOrPhoneUserfind = async (emailOrphone)=>{
         throw new AppError('Failed to find user',500);
     }
 }
+
+
+exports.UpdatePassword = async (password,email)=>{
+
+    const [result] = await com.pool.query('update createuser set password = ? where email = ?',[password,email]);
+
+    if(!result)throw new AppError('Can not update password',400);
+
+    return true;
+
+}
+
+exports.FindEmail = async (email)=>{
+    const [result] = await com.pool.query('select email from createuser where email = ?',[email]);
+
+    console.log(result[0].email);
+
+    if(!result) throw new AppError('Email not found',400);
+
+    return result[0].email;
+}

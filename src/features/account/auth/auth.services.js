@@ -7,6 +7,7 @@ const com = require('../../../config/com');
 
 
 const otpStore = {};
+const forgetStore = {};
 
 
 class Services {
@@ -224,9 +225,14 @@ class Services {
         
         const record = otpStore[tempToken];
 
-        console.log("Record",record);
-
         if(!record)throw new AppError('Invalid session',400);
+
+        console.log("Record",record.email);
+
+        const email = await repo.FindEmail(record.email);
+
+        console.log('User',email);
+
 
         if(Date.now()>record.expire){
             throw new AppError('OTP expired',400);
@@ -236,11 +242,46 @@ class Services {
             throw new AppError('Invalid OTP',400);
         }
 
-        const token = util.generateToken({id: record.userId,email: record.email});
+        const token = util.generateToken({email});
 
-        delete otpStore[tempToken];
+        //delete otpStore[tempToken];
+
+        forgetStore[token] ={
+            email,
+            expire: Date.now() + 5 * 60 * 1000
+        }
+
+        console.log('forgetPassword',forgetStore);
 
         return token; 
+    }
+
+    async VerifyUpdatePassword(tempToken,change_password,email){
+
+        const record = forgetStore[tempToken];
+
+        console.log("Record",record);
+
+        if(!record)throw new AppError('Invalid session',400);
+
+        if(Date.now()>record.expire){
+            throw new AppError('OTP expired',400);
+        }
+
+        if(record.email !== email){
+            throw new AppError('Invalid OTP',400);
+        }
+
+        const salt = await bcrypt.genSalt(12);
+
+        const hashpassword = await bcrypt.hash(change_password,salt);
+
+        change_password = hashpassword;
+
+        const result = await repo.UpdatePassword(change_password,email);
+
+        return result;
+
     }
 }
 

@@ -130,6 +130,34 @@ class AuthController{
         }
 
     }
+
+    async VerifyUpdatePassword(req,res,next){
+        try{
+
+            const {tempToken,change_password,email} = req.body;
+
+            if(!tempToken || !change_password || !email){
+                    throw new AppError('All fields are required',400);
+            }
+
+            const result = await services.VerifyUpdatePassword(tempToken,change_password,email);
+
+            if(result){
+                res.status(201).json({
+                        status: 'success',
+                        result
+                    });
+            }else{
+                res.status(400).json({
+                    status: 'fail',
+                    message: 'Can not email'
+                });
+            }
+
+        }catch(error){
+            next(error);
+        }
+    }
 }
 
 module.exports = new AuthController();
