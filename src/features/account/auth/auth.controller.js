@@ -139,7 +139,7 @@ class AuthController{
             if(!tempToken || !change_password || !email){
                     throw new AppError('All fields are required',400);
             }
-
+    
             const result = await services.VerifyUpdatePassword(tempToken,change_password,email);
 
             if(result){
