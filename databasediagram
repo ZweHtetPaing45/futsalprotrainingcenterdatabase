@@ -18,6 +18,7 @@ Table mobile_training_students{
   payment_image_url text
   payment_public_id text
   source varchar
+  warning boolean
   create_at timestamp
 }
 
@@ -41,6 +42,7 @@ Table admin_training_students{
   payment_image_url text
   payment_public_id text
   source varchar
+  warning boolean
   create_at timestamp_stamp
 }
 
@@ -270,6 +272,7 @@ Table staff {
   email varchar
   status enum('active','inactive')
   password varchar
+  
 }
 
 

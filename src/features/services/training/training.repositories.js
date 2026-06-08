@@ -279,7 +279,7 @@ exports.ShowTraining = async (id) => {
                         'about_title', case when tl.optional_active = 1 then tl.about_title else null end,
                         'details', case when tl.optional_active = 1 then tl.details else null end,
                         'coach_image_url', tl.coach_image_url,
-                        'instsuctor_name', tl.instsuctor_name,
+                        'instructor_name', tl.instsuctor_name,
                         'biography' , tl.biography,
                         'learning_image_url', tl.learning_image_url,
                         'learning_description', tl.learning_description,
