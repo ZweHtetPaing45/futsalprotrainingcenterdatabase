@@ -283,6 +283,14 @@ class Services {
         return result;
 
     }
+
+    async DeleteUser(id){
+
+        const result = await repo.DeleteUser(id);
+
+        return result;
+
+    }
 }
 
 module.exports = new Services();

@@ -158,6 +158,36 @@ class AuthController{
             next(error);
         }
     }
+
+    async DeleteUser(req,res,next){
+
+        try{
+
+            const userdata = req.user;
+
+            const user_id = userdata[0].id;
+
+            console.log(user_id);
+
+            const result = await services.DeleteUser(user_id);
+
+            if(result){
+                res.status(201).json({
+                        status: 'success',
+                        result
+                    });
+            }else{
+                res.status(400).json({
+                    status: 'fail',
+                    message: 'Can not delete'
+                });
+            }
+
+        }catch(error){
+            next(error);
+        }
+
+    }
 }
 
 module.exports = new AuthController();

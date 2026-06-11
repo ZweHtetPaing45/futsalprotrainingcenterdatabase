@@ -119,3 +119,13 @@ exports.FindEmail = async (email)=>{
 
     return result[0].email;
 }
+
+exports.DeleteUser = async (id)=>{
+
+    const [result] = await com.pool.query('update createuser set email = null where id = ?',[id]);
+
+    if(!result) throw new AppError('Delete user Error',400);
+
+    return true;
+
+}
