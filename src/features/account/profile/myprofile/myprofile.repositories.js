@@ -6,11 +6,12 @@ const com = require('../../../../config/com');
 exports.showprofile = async (email)=>{
     try{
 
-                const user = await com.pool.query(`select id,name,email,phone,image_url,DATE_FORMAT(dateOfBirth, '%Y-%m-%d') as dateOfBirth,address from createuser where email = ?`,[email]);
+                let user = await com.pool.query(`select id,name,email,phone,image_url,DATE_FORMAT(dateOfBirth, '%Y-%m-%d') as dateOfBirth,address, warning from createuser where email = ?`,[email]);
 
 
         // const user = await com.pool.query(`select name,email,phone,image_url,dateOfBirth,address from createuser where email = ?`,[email]);
 
+        
         return user[0];
 
     }catch(error){

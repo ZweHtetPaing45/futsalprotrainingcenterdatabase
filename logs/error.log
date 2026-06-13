@@ -162,3 +162,5 @@ JOIN product_tags p' at line 12
 2026-06-08 23:11:11 [31merror[39m:: Invalid OTP
 2026-06-08 23:13:11 [31merror[39m:: Invalid session
 2026-06-08 23:13:14 [31merror[39m:: Invalid session
+2026-06-13 12:13:05 [31merror[39m:: Unauthorized
+2026-06-13 12:13:05 [31merror[39m:: Unauthorized
