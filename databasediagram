@@ -204,6 +204,7 @@ Table mobile_rental_booking{
   amount integer
   remark varchar
   date date
+  warning boolean
   payment_image_url text
   payment_public_id text
   create_at timestamp
@@ -506,11 +507,8 @@ Ref: "createuser"."id" < "mobile_order"."id"
 
 Ref: "brands"."id" < "products"."id"
 
-Ref: "categories"."id" < "products"."id"
 
-Ref: "products"."id" < "product_variants"."id"
 
-Ref: "products"."id" < "product_images"."id"
 
 Ref: "tags"."id" < "product_tags"."tag_id"
 
@@ -652,3 +650,9 @@ Ref: "training_schedule_time_slots"."id" < "admin_training_student_time_slots"."
 Ref: "training_schedule_time_slots"."id" < "mobile_training_student_time_slots"."training_schedule_time_slot_id"
 
 Ref: "mobile_training_students"."id" < "mobile_training_student_time_slots"."mobile_training_students_id"
+
+Ref: "categories"."id" < "products"."category_id"
+
+Ref: "products"."id" < "product_variants"."product_id"
+
+Ref: "products"."id" < "product_images"."product_id"
