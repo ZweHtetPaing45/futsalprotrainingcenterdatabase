@@ -31,7 +31,6 @@ exports.TrainingStudent = async (name,gender,phone,email,age,address,training_pr
 
         image_url = result.image_url;
         public_id = result.public_id;
-
     
 
     [result1] = await com.pool.query(`

@@ -10,6 +10,8 @@ const canteenRouter = require('../features/services/canteen/canteen.route');
 const rentalRouter = require('../features/services/rentals/rental.route');
 const trainingRouter = require('../features/services/training/training.route');
 const contactusRouter = require('../features/account/profile/contactus/contactus.route');
+const walkInRouter = require('../features/walk_in/walk_in.route');
+
 
 router.use('/auth',routes);
 router.use('/myprofile',myprofile);
@@ -22,6 +24,7 @@ router.use('/canteen',canteenRouter);
 router.use('/rental',rentalRouter);
 router.use('/training',trainingRouter);
 router.use('/contactus',contactusRouter);
+router.use('/walk_in',walkInRouter);
 
 
 module.exports = router;

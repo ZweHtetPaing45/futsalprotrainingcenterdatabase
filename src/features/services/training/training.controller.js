@@ -9,6 +9,8 @@ class TrainingController{
         try{
 
             const user_id = req.user[0].id;
+
+            console.log("user_id",user_id);
             
             const {name,gender,phone,email,age,address,training_program_id,training_level_id,payment_id} = req.body;
 
@@ -16,7 +18,7 @@ class TrainingController{
 
             if(!name || !gender || !phone || !email || !age || !address || !training_program_id || !training_level_id ){
                 throw new AppError('Please fill all the fields', 400);
-            }
+            }   
 
             console.log('file',file);
             console.log('body',req.body);
