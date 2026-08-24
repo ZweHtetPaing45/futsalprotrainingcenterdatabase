@@ -45,8 +45,24 @@ class WalkInController{
         }catch(error){
             next(error);
         }
-
     }
+
+        async findUserIdBookingList(req,res,next){
+
+            const user = req.user;
+
+            const user_id = user[0].id;
+
+            const result = await walkInService.findUserIdBookingList(user_id);
+
+             res.status(200).json({
+                message : "User List Walk In Booking",
+                result
+            });
+
+        }
+
+    
 
 
 }

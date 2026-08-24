@@ -19,6 +19,14 @@ class WalkInService{
 
     }
 
+        async findUserIdBookingList(user_id){
+
+            const result = await walkRepo.findUserIdBookingList(user_id);
+
+            return result;
+
+        }
+
     
 
 }

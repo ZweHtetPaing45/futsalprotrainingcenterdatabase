@@ -182,14 +182,20 @@ exports.allCourtWalkIn = async ()=>{
 
     JSON_ARRAYAGG(
         JSON_OBJECT(
-            'court_id', c.id,
-            'court_name', c.court_name,
-            'walk_in_id', wi.id,
+            'court_id',
+            c.id,
+
+            'court_name',
+            c.court_name,
+
+            'walk_in_id',
+            wi.id,
+
             'court_images',
             COALESCE(
                 (
                     SELECT JSON_ARRAYAGG(cg.court_image_url)
-                    FROM court_gallery cg
+                    FROM court_gallery AS cg
                     WHERE cg.court_id = c.id
                 ),
                 JSON_ARRAY()
@@ -198,6 +204,7 @@ exports.allCourtWalkIn = async ()=>{
             'walk_in_price',
             CASE
                 WHEN c.court_active = 1
+                     AND wi.id IS NOT NULL
                 THEN wi.daily_price
                 ELSE NULL
             END,
@@ -205,6 +212,7 @@ exports.allCourtWalkIn = async ()=>{
             'open_at',
             CASE
                 WHEN c.court_active = 1
+                     AND wi.id IS NOT NULL
                 THEN TIME_FORMAT(wi.open_at, '%H:%i')
                 ELSE NULL
             END,
@@ -212,6 +220,7 @@ exports.allCourtWalkIn = async ()=>{
             'close_at',
             CASE
                 WHEN c.court_active = 1
+                     AND wi.id IS NOT NULL
                 THEN TIME_FORMAT(wi.close_at, '%H:%i')
                 ELSE NULL
             END,
@@ -219,6 +228,7 @@ exports.allCourtWalkIn = async ()=>{
             'capacity',
             CASE
                 WHEN c.court_active = 1
+                     AND wi.id IS NOT NULL
                 THEN wi.capacity
                 ELSE NULL
             END,
@@ -226,6 +236,7 @@ exports.allCourtWalkIn = async ()=>{
             'booked_count',
             CASE
                 WHEN c.court_active = 1
+                     AND wi.id IS NOT NULL
                 THEN COALESCE(b.booked_count, 0)
                 ELSE NULL
             END,
@@ -233,6 +244,8 @@ exports.allCourtWalkIn = async ()=>{
             'remaining_capacity',
             CASE
                 WHEN c.court_active = 1
+                     AND wi.id IS NOT NULL
+                     AND wi.capacity IS NOT NULL
                 THEN GREATEST(
                     wi.capacity - COALESCE(b.booked_count, 0),
                     0
@@ -242,10 +255,17 @@ exports.allCourtWalkIn = async ()=>{
 
             'status',
             CASE
+                WHEN c.id IS NULL
+                    THEN NULL
+
                 WHEN c.court_active = 0
                     THEN NULL
 
-                WHEN wi.capacity <= COALESCE(b.booked_count, 0)
+                WHEN wi.id IS NULL
+                     OR wi.capacity IS NULL
+                    THEN 'WALK_IN_NOT_AVAILABLE'
+
+                WHEN COALESCE(b.booked_count, 0) >= wi.capacity
                     THEN 'FULLY_BOOKED'
 
                 ELSE 'WALK_IN_ACTIVE'
@@ -253,32 +273,129 @@ exports.allCourtWalkIn = async ()=>{
         )
     ) AS courts
 
-FROM venue v
+FROM venue AS v
 
-LEFT JOIN court c
+LEFT JOIN court AS c
     ON c.venue_id = v.id
 
-LEFT JOIN walk_ins wi
+LEFT JOIN walk_ins AS wi
     ON wi.court_id = c.id
 
 LEFT JOIN (
     SELECT
-        court_id,
+        booking_rows.vanue_id,
+        booking_rows.court_id,
+        booking_rows.walk_in_id,
         COUNT(*) AS booked_count
-    FROM walk_in_bookings
-    WHERE date = CURDATE()
-    GROUP BY court_id
-) b
-    ON b.court_id = c.id
+
+    FROM (
+        SELECT
+            wib.vanue_id,
+            wib.court_id,
+            wib.walk_in_id
+        FROM walk_in_bookings AS wib
+        WHERE wib.date = CURDATE()
+
+        UNION ALL
+
+        SELECT
+            mwib.vanue_id,
+            mwib.court_id,
+            mwib.walk_in_id
+        FROM mobile_walk_in_bookings AS mwib
+        WHERE mwib.date = CURDATE()
+    ) AS booking_rows
+
+    GROUP BY
+        booking_rows.vanue_id,
+        booking_rows.court_id,
+        booking_rows.walk_in_id
+) AS b
+    ON b.vanue_id = v.id
+   AND b.court_id = c.id
+   AND b.walk_in_id = wi.id
 
 GROUP BY
     v.id,
     v.venue_name,
     v.venue_image_url
 
-ORDER BY v.id ASC;   
+ORDER BY
+    v.id ASC;   
         `);
 
         return rows;
+
+}
+
+
+exports.findUserIdBookingList = async (user_id)=>{
+
+    const rows = await com.pool.query(`
+        SELECT
+    wib.user_id,
+    wi.id AS walk_in_id,
+    wib.id AS booking_id,
+    wib.name AS booking_name,
+    wib.phone,
+    wib.date,
+    wib.payment_image_url,
+
+    CONCAT(
+        TIME_FORMAT(wi.open_at, '%h:%i %p'),
+        ' - ',
+        TIME_FORMAT(wi.close_at, '%h:%i %p')
+    ) AS time,
+
+    v.venue_name,
+    c.court_name,
+    p.payment_method,
+    wi.daily_price AS walk_in_price,
+
+    COALESCE(SUM(wie.total), 0) AS equipment_price,
+
+    wib.amount
+
+FROM mobile_walk_in_bookings AS wib
+
+LEFT JOIN walk_ins AS wi
+    ON wi.id = wib.walk_in_id
+
+LEFT JOIN payment AS p
+    ON p.id = wib.payment_id
+
+LEFT JOIN venue AS v
+    ON v.id = wib.vanue_id
+
+LEFT JOIN court AS c
+    ON c.id = wib.court_id
+
+LEFT JOIN mobile_walk_in_equipment AS wie
+    ON wie.mobile_walk_in_booking_id = wib.id
+
+WHERE wib.user_id = ?
+
+GROUP BY
+    wib.user_id,
+    wi.id,
+    wib.id,
+    wib.name,
+    wib.phone,
+    wib.date,
+    wib.payment_image_url,
+    wi.open_at,
+    wi.close_at,
+    v.venue_name,
+    c.court_name,
+    p.payment_method,
+    wi.daily_price,
+    wib.amount
+
+ORDER BY wib.id DESC;  
+        `,user_id);
+
+
+        const row = rows[0];
+        return row;
 
 }

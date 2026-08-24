@@ -9,6 +9,6 @@ router.post('/booking',upload.single('payment_image'),auth.authMiddle,walkInCont
 
 //Get Method
 router.get('/court_list',walkInController.allCourtWalkIn);
-
+router.get('/booking_list',auth.authMiddle,walkInController.findUserIdBookingList);
 
 module.exports = router;
