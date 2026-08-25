@@ -81,7 +81,7 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
 
         for(const eq of item){
 
-            const [eq_price] = await com.pool.query('select rental_price from equipment where id = ?',eq.equipment_id);
+            const [eq_price] = await com.pool.query('select rental_price,qty_total from equipment where id = ?',eq.equipment_id);
 
             const eqprice = eq_price[0].rental_price;
 
@@ -89,6 +89,22 @@ exports.RentalBooking = async (venue_id,court_id,payment_id,date,name,phone,rema
             const quantity = eq.quantity;
 
             // admin_booking_total_price += eqprice;
+
+             console.log('quantity',quantity);
+
+            console.log("qty_total",eq_price[0].qty_total);
+
+            if(eq_price[0].qty_total < Number(quantity)){
+                return "Equipment is not available";
+            }
+            
+                
+            const remainQuantity = eq_price[0].qty_total - Number(quantity);
+
+            console.log("RemainQuantity",remainQuantity);
+
+            await com.pool.query('update equipment set qty_total = ? where id = ?',[remainQuantity,eq_id]);
+
 
             total = quantity * eqprice;
 

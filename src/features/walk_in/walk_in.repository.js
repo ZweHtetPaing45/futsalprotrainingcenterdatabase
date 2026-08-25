@@ -68,7 +68,7 @@ if(items){
 
         for(const eq of item){
 
-            const [eq_price] = await com.pool.query('select rental_price from equipment where id = ?',eq.equipment_id);
+            const [eq_price] = await com.pool.query('select rental_price,qty_total from equipment where id = ?',eq.equipment_id);
 
             const eqprice = eq_price[0].rental_price;
 
@@ -76,6 +76,22 @@ if(items){
             const quantity = eq.quantity;
 
             // admin_booking_total_price += eqprice;
+
+            console.log('quantity',quantity);
+
+            console.log("qty_total",eq_price[0].qty_total);
+
+            if(eq_price[0].qty_total < Number(quantity)){
+                return "Equipment is not available";
+            }
+            
+                
+            const remainQuantity = eq_price[0].qty_total - Number(quantity);
+
+            console.log("RemainQuantity",remainQuantity);
+
+            await com.pool.query('update equipment set qty_total = ? where id = ?',[remainQuantity,eq_id]);
+
 
             total = quantity * eqprice;
 
@@ -104,65 +120,76 @@ if(items){
 
     const [rows] = await com.pool.query(`
         SELECT
-    u.id As User_id,
-    wi.id As Walk_In_id,
+    u.id AS user_id,
+    wi.id AS walk_in_id,
     wib.id AS booking_id,
     wib.name AS booking_name,
     wib.phone,
     wib.payment_image_url,
+
     DATE_FORMAT(wib.date, '%Y-%m-%d') AS date,
-    DATE_FORMAT(wib.create_at, '%h:%i:%s %p') AS Time,
+    DATE_FORMAT(wib.create_at, '%h:%i:%s %p') AS time,
+
     CONCAT(
-        TIME_FORMAT(wi.open_at, '%h:%i'),
+        TIME_FORMAT(wi.open_at, '%h:%i %p'),
         ' - ',
-        TIME_FORMAT(wi.close_at, '%h:%i')
+        TIME_FORMAT(wi.close_at, '%h:%i %p')
     ) AS operating_hour,
 
     v.venue_name,
     c.court_name,
-
     p.payment_method,
 
     wi.daily_price AS walk_in_price,
 
-    COALESCE(SUM(wie.total), 0) AS equipment_price,
+    COALESCE(eq.equipment_price, 0) AS equipment_price,
+    COALESCE(eq.equipment, JSON_ARRAY()) AS equipment,
 
     wib.amount
 
-FROM mobile_walk_in_bookings wib
+FROM mobile_walk_in_bookings AS wib
 
-LEFT JOIN walk_ins wi
+LEFT JOIN walk_ins AS wi
     ON wi.id = wib.walk_in_id
 
-LEFT JOIN payment p
+LEFT JOIN payment AS p
     ON p.id = wib.payment_id
 
-LEFT JOIN createuser u
+LEFT JOIN createuser AS u
     ON u.id = wib.user_id
 
-LEFT JOIN venue v
+LEFT JOIN venue AS v
     ON v.id = wib.vanue_id
 
-LEFT JOIN court c
+LEFT JOIN court AS c
     ON c.id = wib.court_id
 
-LEFT JOIN mobile_walk_in_equipment wie
-    ON wie.mobile_walk_in_booking_id = wib.id
+LEFT JOIN (
+    SELECT
+        mwie.mobile_walk_in_booking_id,
+
+        SUM(COALESCE(mwie.total, 0)) AS equipment_price,
+
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'equipment_id', mwie.equipment_id,
+                'equipment_name', e.product_name,
+                'quantity', mwie.quantity,
+                'price', mwie.price,
+                'total', mwie.total
+            )
+        ) AS equipment
+
+    FROM mobile_walk_in_equipment AS mwie
+
+    LEFT JOIN equipment AS e
+        ON e.id = mwie.equipment_id
+
+    GROUP BY mwie.mobile_walk_in_booking_id
+) AS eq
+    ON eq.mobile_walk_in_booking_id = wib.id
 
 WHERE wib.id = ?
-
-GROUP BY
-    wib.id,
-    wib.name,
-    wib.phone,
-    wib.date,
-    wi.open_at,
-    wi.close_at,
-    v.venue_name,
-    c.court_name,
-    p.payment_method,
-    wi.daily_price,
-    wib.amount
 
 ORDER BY wib.id;    
         `,[bookingId]);
@@ -332,13 +359,13 @@ ORDER BY
 exports.findUserIdBookingList = async (user_id)=>{
 
     const rows = await com.pool.query(`
-        SELECT
+       SELECT
     wib.user_id,
     wi.id AS walk_in_id,
     wib.id AS booking_id,
     wib.name AS booking_name,
     wib.phone,
-    wib.date,
+    DATE_FORMAT(wib.date, '%Y-%m-%d') AS date,
     wib.payment_image_url,
 
     CONCAT(
@@ -352,7 +379,8 @@ exports.findUserIdBookingList = async (user_id)=>{
     p.payment_method,
     wi.daily_price AS walk_in_price,
 
-    COALESCE(SUM(wie.total), 0) AS equipment_price,
+    COALESCE(eq.equipment_price, 0) AS equipment_price,
+    COALESCE(eq.equipment, JSON_ARRAY()) AS equipment,
 
     wib.amount
 
@@ -370,28 +398,34 @@ LEFT JOIN venue AS v
 LEFT JOIN court AS c
     ON c.id = wib.court_id
 
-LEFT JOIN mobile_walk_in_equipment AS wie
-    ON wie.mobile_walk_in_booking_id = wib.id
+LEFT JOIN (
+    SELECT
+        mwie.mobile_walk_in_booking_id,
+
+        SUM(COALESCE(mwie.total, 0)) AS equipment_price,
+
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'equipment_id', mwie.equipment_id,
+                'equipment_name', e.product_name,
+                'quantity', mwie.quantity,
+                'price', mwie.price,
+                'total', mwie.total
+            )
+        ) AS equipment
+
+    FROM mobile_walk_in_equipment AS mwie
+
+    LEFT JOIN equipment AS e
+        ON e.id = mwie.equipment_id
+
+    GROUP BY mwie.mobile_walk_in_booking_id
+) AS eq
+    ON eq.mobile_walk_in_booking_id = wib.id
 
 WHERE wib.user_id = ?
 
-GROUP BY
-    wib.user_id,
-    wi.id,
-    wib.id,
-    wib.name,
-    wib.phone,
-    wib.date,
-    wib.payment_image_url,
-    wi.open_at,
-    wi.close_at,
-    v.venue_name,
-    c.court_name,
-    p.payment_method,
-    wi.daily_price,
-    wib.amount
-
-ORDER BY wib.id DESC;  
+ORDER BY wib.id DESC; 
         `,user_id);
 
 
