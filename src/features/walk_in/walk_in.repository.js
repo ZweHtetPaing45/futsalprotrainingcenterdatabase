@@ -203,20 +203,31 @@ ORDER BY wib.id;
 exports.allCourtWalkIn = async ()=>{
 
     const [rows] = await com.pool.query(`
-                SELECT
+               SELECT
     v.id AS venue_id,
     v.venue_name,
 
+    COALESCE(
+        (
+            SELECT JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'equipment_id', e.id,
+                    'equipment_name', e.product_name,
+                    'rental_price', e.rental_price,
+                    'qty_total', e.qty_total
+                )
+            )
+            FROM equipment AS e
+            WHERE e.venue_id = v.id
+        ),
+        JSON_ARRAY()
+    ) AS equipment,
+
     JSON_ARRAYAGG(
         JSON_OBJECT(
-            'court_id',
-            c.id,
-
-            'court_name',
-            c.court_name,
-
-            'walk_in_id',
-            wi.id,
+            'court_id', c.id,
+            'court_name', c.court_name,
+            'walk_in_id', wi.id,
 
             'court_images',
             COALESCE(
@@ -230,40 +241,35 @@ exports.allCourtWalkIn = async ()=>{
 
             'walk_in_price',
             CASE
-                WHEN c.court_active = 1
-                     AND wi.id IS NOT NULL
+                WHEN c.court_active = 1 AND wi.id IS NOT NULL
                 THEN wi.daily_price
                 ELSE NULL
             END,
 
             'open_at',
             CASE
-                WHEN c.court_active = 1
-                     AND wi.id IS NOT NULL
+                WHEN c.court_active = 1 AND wi.id IS NOT NULL
                 THEN TIME_FORMAT(wi.open_at, '%H:%i')
                 ELSE NULL
             END,
 
             'close_at',
             CASE
-                WHEN c.court_active = 1
-                     AND wi.id IS NOT NULL
+                WHEN c.court_active = 1 AND wi.id IS NOT NULL
                 THEN TIME_FORMAT(wi.close_at, '%H:%i')
                 ELSE NULL
             END,
 
             'capacity',
             CASE
-                WHEN c.court_active = 1
-                     AND wi.id IS NOT NULL
+                WHEN c.court_active = 1 AND wi.id IS NOT NULL
                 THEN wi.capacity
                 ELSE NULL
             END,
 
             'booked_count',
             CASE
-                WHEN c.court_active = 1
-                     AND wi.id IS NOT NULL
+                WHEN c.court_active = 1 AND wi.id IS NOT NULL
                 THEN COALESCE(b.booked_count, 0)
                 ELSE NULL
             END,
@@ -282,19 +288,12 @@ exports.allCourtWalkIn = async ()=>{
 
             'status',
             CASE
-                WHEN c.id IS NULL
-                    THEN NULL
-
-                WHEN c.court_active = 0
-                    THEN NULL
-
-                WHEN wi.id IS NULL
-                     OR wi.capacity IS NULL
+                WHEN c.id IS NULL THEN NULL
+                WHEN c.court_active = 0 THEN NULL
+                WHEN wi.id IS NULL OR wi.capacity IS NULL
                     THEN 'WALK_IN_NOT_AVAILABLE'
-
                 WHEN COALESCE(b.booked_count, 0) >= wi.capacity
                     THEN 'FULLY_BOOKED'
-
                 ELSE 'WALK_IN_ACTIVE'
             END
         )
@@ -347,8 +346,7 @@ GROUP BY
     v.venue_name,
     v.venue_image_url
 
-ORDER BY
-    v.id ASC;   
+ORDER BY v.id ASC;  
         `);
 
         return rows;
