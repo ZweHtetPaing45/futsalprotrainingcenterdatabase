@@ -18,7 +18,9 @@ class Services {
 
         console.log(exit);
 
-        if(exit)throw new AppError('User already exist', 400);
+        if(exit){
+            return "User already exit";
+        }
 
         const salt = await bcrypt.genSalt(12);
 
