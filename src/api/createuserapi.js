@@ -11,6 +11,7 @@ const rentalRouter = require('../features/services/rentals/rental.route');
 const trainingRouter = require('../features/services/training/training.route');
 const contactusRouter = require('../features/account/profile/contactus/contactus.route');
 const walkInRouter = require('../features/walk_in/walk_in.route');
+const bannerRouter = require('../features/banner/banner.route');
 
 
 router.use('/auth',routes);
@@ -25,6 +26,7 @@ router.use('/rental',rentalRouter);
 router.use('/training',trainingRouter);
 router.use('/contactus',contactusRouter);
 router.use('/walk_in',walkInRouter);
+router.use('/banner',bannerRouter);
 
 
 module.exports = router;
