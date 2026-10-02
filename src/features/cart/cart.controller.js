@@ -1,95 +1,91 @@
-const services = require('./cart.service');
+const services = require("./cart.service");
 
-class cartOrderController{
-    
-    async order(req,res,next){
-        try{
+class cartOrderController {
+  async order(req, res, next) {
+    try {
+      const file = req.file;
 
-            const file = req.file; 
+      const {
+        user_id,
+        customer_name,
+        phone,
+        email,
+        delivery_address,
+        remark,
+        payment_method,
+        items,
+      } = req.body;
 
-            const {
-                user_id,
-                customer_name,
-                phone,
-                email,
-                delivery_address,
-                remark,
-                payment_method,
-                items
-            } = req.body;
+      const result = await services.order(
+        user_id,
+        customer_name,
+        phone,
+        email,
+        delivery_address,
+        remark,
+        payment_method,
+        items,
+        file,
+      );
 
-            const result = await services.order(user_id,customer_name,phone,email,delivery_address,remark,payment_method,items,file);
-
-            res.status(200).json({
-                success:true,
-                message:'Order placed successfully',
-                data:result
-            });
-
-        }catch(error){
-            next(error);
-        }
+      res.status(200).json({
+        success: true,
+        message: "Order placed successfully",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
     }
+  }
 
-    async orderList(req,res,next){
+  async orderList(req, res, next) {
+    try {
+      const userData = req.user;
 
-        try{
+      // console.log("User Data",userData)
+      console.log(userData[0].id);
 
-            const userData = req.user;
+      const userId = userData[0].id;
 
-            // console.log("User Data",userData)
-            console.log(userData[0].id);
+      const result = await services.orderList(userId);
 
-            const userId = userData[0].id;
-
-            const result = await services.orderList(userId);
-
-            res.status(200).json({
-                success:true,
-                message:'Order List',
-                data:result
-            });
-
-        }catch(error){
-            next(error);
-        }
-
+      res.status(200).json({
+        success: true,
+        message: "Order List",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
     }
+  }
 
-    async showPayment(req,res,next){
-        try{
+  async showPayment(req, res, next) {
+    try {
+      const result = await services.showPayment();
 
-            const result = await services.showPayment();
-
-            res.status(200).json({
-                success:true,
-                message:'Payment List',
-                data:result
-            });
-
-        }catch(error){
-            next(error);
-        }
+      res.status(200).json({
+        success: true,
+        message: "Payment List",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
     }
+  }
 
-    async showTax(req,res,next){
+  async showTax(req, res, next) {
+    try {
+      const result = await services.showTax();
 
-        try{
-
-            const result = await services.showTax();
-
-            res.status(200).json({
-                success:true,
-                message:'Tax List',
-                data:result
-            });
-
-        }catch(error){
-            next(error);
-        }
-
+      res.status(200).json({
+        success: true,
+        message: "Tax List",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
     }
-
+  }
 }
 
 module.exports = new cartOrderController();

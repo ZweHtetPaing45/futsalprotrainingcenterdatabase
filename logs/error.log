@@ -172,3 +172,12 @@ JOIN product_tags p' at line 12
 2026-08-06 10:41:40 [31merror[39m:: User already exist
 2026-08-06 10:41:43 [31merror[39m:: User already exist
 2026-08-27 19:18:03 [31merror[39m:: User already exist
+2026-09-18 17:09:55 [31merror[39m:: Failed to fetch banners
+2026-09-18 17:10:35 [31merror[39m:: Failed to fetch banners
+2026-09-18 17:12:23 [31merror[39m:: Failed to fetch banners
+2026-09-18 17:12:26 [31merror[39m:: Failed to fetch banners
+2026-09-18 17:12:38 [31merror[39m:: Failed to fetch banners
+2026-09-18 17:13:36 [31merror[39m:: Failed to fetch banners
+2026-09-19 16:54:37 [31merror[39m:: Failed to fetch banners
+2026-09-19 16:56:19 [31merror[39m:: Failed to fetch banners
+2026-09-19 16:57:41 [31merror[39m:: Failed to fetch banners
