@@ -12,6 +12,7 @@ const trainingRouter = require('../features/services/training/training.route');
 const contactusRouter = require('../features/account/profile/contactus/contactus.route');
 const walkInRouter = require('../features/walk_in/walk_in.route');
 const bannerRouter = require('../features/banner/banner.route');
+const tournamentBannerRouter = require('../features/tournament/banner/tbanner.route');
 
 
 router.use('/auth',routes);
@@ -27,6 +28,7 @@ router.use('/training',trainingRouter);
 router.use('/contactus',contactusRouter);
 router.use('/walk_in',walkInRouter);
 router.use('/banner',bannerRouter);
+router.use('/tournament/banner',tournamentBannerRouter);
 
 
 module.exports = router;
