@@ -12,7 +12,7 @@ class AuthController{
                 throw new AppError('All fields are required',400);
             }
 
-            const image_url = 'http://38.60.216.25:5001/uploads/profile.jpg';
+            const image_url = 'http://130.94.99.9:5001/uploads/profile.jpg';
 
             const token = await services.createUser(name,email,phone,dateOfBirth,password,image_url);
 
