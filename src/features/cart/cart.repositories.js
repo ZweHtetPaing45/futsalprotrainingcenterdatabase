@@ -3,172 +3,73 @@ const AppError = require('../../utils/AppError');
 const logger = require('../../utils/logger');
 const uploader = require('@zwehtetpaing55/uploader');
 
+const parseItems = (items) => {
+    let parsedItems;
 
-
-exports.order = async (user_id,customer_name,phone,email,delivery_address,remark,payment_method,items,file) => {
-
-    console.log('user_id',user_id);
-    console.log('customer_name',customer_name);
-    console.log('phone',phone);
-    console.log('email',email);
-    console.log('delivery_address',delivery_address);
-    console.log('remark',remark);
-    console.log('payment_method',payment_method);
-    console.log('items',items);
-    console.log('file',file);
-
-    let subtotal = 0;
-
-    const parsedItems = JSON.parse(items);
-
-    if(!parsedItems)throw new AppError('Items must be a valid JSON string',400);
-
-    console.log(items.product_id);
-
-    for(let item of parsedItems){
-
-        console.log('item',item);
-
-        const [p] = await com.pool.query('select products.price,product_variants.stock from products join product_variants on product_variants.product_id = products.id where products.id = ?',[item.product_id]);
-
-        console.log('p',p);
-
-        if(p[0].stock < item.quantity){
-            throw new AppError(`Not enough stock for product ID: ${item.product_id}`, 400);
-        }
+    try {
+        parsedItems = typeof items === 'string' ? JSON.parse(items) : items;
+    } catch {
+        throw new AppError('Items must be a valid JSON array', 400);
     }
 
-    const result = await uploader.upload(file, 'mobile_orders_payment_image');
-
-    const imageUrl = result.image_url;
-    
-    console.log('imageUrl',imageUrl);
-
-    const publicId = result.public_id;
-    
-    console.log('publicId',publicId);
-
-    const [payment_id] = await com.pool.query('select id from payment where payment_method = ?',[payment_method]);
-
-    console.log('payment_id',payment_id[0].id);
-
-    const payment_method_id = payment_id[0].id;
-
-    const [tax] = await com.pool.query('select id from tax;');
-
-    console.log('tax',tax[0].id);
-
-    const tax_id  = tax[0].id;
-
-    const [order] = await com.pool.query('insert into mobile_order (user_id,payment_id,tax_id,customer_name,phone,email,delivery_address,remark,mobile_image_url,mobile_public_id) values (?,?,?,?,?,?,?,?,?,?)',
-    [user_id,payment_method_id,tax_id,customer_name,phone,email,delivery_address,remark,imageUrl,publicId]);
-
-    const orderId = order.insertId;
-
-    console.log('orderId',orderId);
-
-    for(let item of parsedItems){
-        const [p] = await com.pool.query('select price from products where id = ?',[item.product_id]);
-
-        const price = p[0].price;
-
-        console.log('price',price);
-
-        const total = price * item.quantity;
-
-        console.log('total',total);
-
-        subtotal +=total;
-
-        console.log('orderId',orderId);
-        console.log('item.product_id',item.product_id);
-        console.log('item.quantity',item.quantity);
-        console.log('price',price);
-        console.log('total',total);
-
-        const [insertmobileorder] = await com.pool.query('insert into mobile_order_items (order_id,product_id,quantity,price,total) values (?,?,?,?,?)',
-        [orderId,item.product_id,item.quantity,price,total]);
-
-        if(!insertmobileorder){
-            throw new AppError('Failed to create order',500);
-        }
-
-        const updateStock = await com.pool.query('update product_variants set stock = stock - ? where product_id = ?',[item.quantity,item.product_id]);
-
-        if(!updateStock){
-            throw new AppError('Failed to update stock',500);
-        }
-
-        console.log('subtotal',subtotal);
-
-        const [tax] = await com.pool.query('select tax from tax where id = ?',[tax_id]);
-
-
-        const finalTotal = subtotal + Number(tax[0].tax);
-        
-        console.log('finalTotal',finalTotal);
-
-        const updateOrder = await com.pool.query('update mobile_order set sub_total = ? , total_amount = ? where id = ?',[subtotal,finalTotal,orderId]);
-
-        if(!updateOrder){
-            throw new AppError('Failed to update order',500);
-        }
+    if (!Array.isArray(parsedItems) || parsedItems.length === 0) {
+        throw new AppError('Items must be a non-empty JSON array', 400);
     }
 
-    console.log(true);
+    const quantitiesByProduct = new Map();
 
-    // const [prindOrder] = await com.pool.query(`
-    //                 SELECT 
-    //                 o.id AS order_id,
-    //                 o.customer_name,
-    //                 o.total_amount,
-    //                 p.name AS product_name,
-    //                 oi.quantity,
-    //                 oi.price,
-    //                 oi.total,
-    //                 convert_tz(o.create_at, '+00:00','+06:30') AS create_at,
-    //                 o.payment_method,
-    //                 o.tax,
-    //                 o.delivery_fee,
-    //                 o.sub_total
-    //                 FROM mobile_order o
-    //                 JOIN mobile_order_items oi ON o.id = oi.order_id
-    //                 JOIN products p ON p.id = oi.product_id
-    //                 WHERE o.id = ?;`, 
-    //                 [orderId]);
+    for (const item of parsedItems) {
+        const productId = Number(item?.product_id);
+        const quantity = Number(item?.quantity);
 
-    const [prindOrder] = await com.pool.query(
-                    `SELECT 
-                        o.id AS order_id,
-                        o.customer_name,
-                        o.total_amount,
-                        p2.payment_method,
-                        t.tax,
-                        o.order_status,
-                        p.name AS product_name,
-                        oi.quantity,
-                        oi.price,
-                        oi.total,
-                        DATE_FORMAT(o.create_at, '%Y-%m-%d') AS date_only,
-                        DATE_FORMAT(o.create_at, '%h:%i:%s %p') AS time_only,
-                        o.delivery_fee,
-                        o.sub_total
-                    FROM mobile_order o
-                    JOIN mobile_order_items oi ON o.id = oi.order_id
-                    JOIN products p ON p.id = oi.product_id
-                    LEFT JOIN payment p2 ON p2.id = o.payment_id
-                    LEFT JOIN tax t ON t.id = o.tax_id
-                    WHERE o.id = ?;`
-                    , [orderId]);
+        if (!Number.isSafeInteger(productId) || productId <= 0 ||
+            !Number.isSafeInteger(quantity) || quantity <= 0) {
+            throw new AppError('Each item must have a valid product_id and positive integer quantity', 400);
+        }
 
-console.log('prindOrder',prindOrder);
+        const totalQuantity = (quantitiesByProduct.get(productId) || 0) + quantity;
+        if (!Number.isSafeInteger(totalQuantity)) {
+            throw new AppError(`Quantity is too large for product ID: ${productId}`, 400);
+        }
+        quantitiesByProduct.set(productId, totalQuantity);
+    }
 
+    return [...quantitiesByProduct.entries()]
+        .map(([product_id, quantity]) => ({ product_id, quantity }))
+        .sort((a, b) => a.product_id - b.product_id);
+};
 
-            const grouped = {};
+const getOrderDetails = async (db, orderId) => {
+    const [rows] = await db.query(
+        `SELECT
+            o.id AS order_id,
+            o.customer_name,
+            o.total_amount,
+            p2.payment_method,
+            t.tax,
+            o.order_status,
+            p.name AS product_name,
+            oi.quantity,
+            oi.price,
+            oi.total,
+            DATE_FORMAT(o.create_at, '%Y-%m-%d') AS date_only,
+            DATE_FORMAT(o.create_at, '%h:%i:%s %p') AS time_only,
+            o.delivery_fee,
+            o.sub_total
+        FROM mobile_order o
+        JOIN mobile_order_items oi ON oi.order_id = o.id
+        JOIN products p ON p.id = oi.product_id
+        LEFT JOIN payment p2 ON p2.id = o.payment_id
+        LEFT JOIN tax t ON t.id = o.tax_id
+        WHERE o.id = ?`,
+        [orderId]
+    );
 
-            prindOrder.forEach(row => {
-            if (!grouped[row.order_id]) {
-                grouped[row.order_id] = {
+    const grouped = {};
+
+    for (const row of rows) {
+        if (!grouped[row.order_id]) {
+            grouped[row.order_id] = {
                 order_id: row.order_id,
                 Date: row.date_only,
                 Time: row.time_only,
@@ -179,24 +80,203 @@ console.log('prindOrder',prindOrder);
                 tax: row.tax,
                 delivery_fee: row.delivery_fee,
                 Total: row.total_amount,
-                };
+            };
+        }
+
+        grouped[row.order_id].items.push({
+            product_name: row.product_name,
+            quantity: row.quantity,
+            price: row.price,
+            total: row.total,
+        });
+    }
+
+    return Object.values(grouped);
+};
+
+const getOrderForIdempotencyKey = async (db, key) => {
+    const [rows] = await db.query(
+        'SELECT id, user_id FROM mobile_order WHERE idempotency_key = ?',
+        [key]
+    );
+
+    return rows[0];
+};
+
+exports.order = async (
+    user_id,
+    customer_name,
+    phone,
+    email,
+    delivery_address,
+    remark,
+    payment_method,
+    items,
+    file,
+    idempotencyKey
+) => {
+    if (typeof idempotencyKey !== 'string' || idempotencyKey.length === 0 || idempotencyKey.length > 255) {
+        throw new AppError('A valid Idempotency-Key header is required', 400);
+    }
+
+    const parsedItems = parseItems(items);
+    const existingOrder = await getOrderForIdempotencyKey(com.pool, idempotencyKey);
+    if (existingOrder) {
+        if (Number(existingOrder.user_id) !== Number(user_id)) {
+            throw new AppError('Idempotency-Key has already been used', 409);
+        }
+        return getOrderDetails(com.pool, existingOrder.id);
+    }
+
+    let uploadedImage;
+    let connection;
+    let transactionStarted = false;
+    let committed = false;
+    let insertingOrder = false;
+
+    try {
+        uploadedImage = await uploader.upload(file, 'mobile_orders_payment_image');
+        connection = await com.pool.getConnection();
+        await connection.beginTransaction();
+        transactionStarted = true;
+
+        const [paymentRows] = await connection.query(
+            'SELECT id FROM payment WHERE payment_method = ? LIMIT 1',
+            [payment_method]
+        );
+        if (paymentRows.length === 0) {
+            throw new AppError('Payment method was not found', 400);
+        }
+
+        const [taxRows] = await connection.query('SELECT id, tax FROM tax LIMIT 1');
+        if (taxRows.length === 0) {
+            throw new AppError('Tax configuration was not found', 500);
+        }
+
+        insertingOrder = true;
+        const [order] = await connection.query(
+            `INSERT INTO mobile_order
+            (user_id, payment_id, tax_id, customer_name, phone, email, delivery_address, remark, mobile_image_url, mobile_public_id, idempotency_key)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                user_id,
+                paymentRows[0].id,
+                taxRows[0].id,
+                customer_name,
+                phone,
+                email,
+                delivery_address,
+                remark,
+                uploadedImage.image_url,
+                uploadedImage.public_id,
+                idempotencyKey,
+            ]
+        );
+        insertingOrder = false;
+        const orderId = order.insertId;
+
+        const productDetails = new Map();
+        for (const item of parsedItems) {
+            const [productRows] = await connection.query(
+                `SELECT p.price, pv.id AS variant_id, pv.stock
+                FROM products p
+                JOIN product_variants pv ON pv.product_id = p.id
+                WHERE p.id = ?
+                ORDER BY pv.id
+                FOR UPDATE`,
+                [item.product_id]
+            );
+
+            if (productRows.length === 0) {
+                throw new AppError(`Product not found or unavailable: ${item.product_id}`, 400);
             }
 
-            grouped[row.order_id].items.push({
-                product_name: row.product_name,
-                quantity: row.quantity,
-                price: row.price,
-                total: row.total
+            const availableStock = productRows.reduce((total, row) => total + Number(row.stock), 0);
+            if (availableStock < item.quantity) {
+                throw new AppError(`Not enough stock for product ID: ${item.product_id}`, 409);
+            }
+
+            productDetails.set(item.product_id, {
+                price: Number(productRows[0].price),
+                variants: productRows,
             });
-            });
+        }
 
-            const result1 = Object.values(grouped);
+        let subtotal = 0;
 
-            console.log('result1',result1);
+        for (const item of parsedItems) {
+            const { price, variants } = productDetails.get(item.product_id);
+            const total = price * item.quantity;
+            let stockToReserve = item.quantity;
 
-    return result1;
+            for (const variant of variants) {
+                const reserveFromVariant = Math.min(Number(variant.stock), stockToReserve);
+                if (reserveFromVariant === 0) continue;
 
-}
+                const [stockUpdate] = await connection.query(
+                    'UPDATE product_variants SET stock = stock - ? WHERE id = ? AND stock >= ?',
+                    [reserveFromVariant, variant.variant_id, reserveFromVariant]
+                );
+                if (stockUpdate.affectedRows !== 1) {
+                    throw new AppError(`Not enough stock for product ID: ${item.product_id}`, 409);
+                }
+                stockToReserve -= reserveFromVariant;
+                if (stockToReserve === 0) break;
+            }
+
+            if (stockToReserve !== 0) {
+                throw new AppError(`Not enough stock for product ID: ${item.product_id}`, 409);
+            }
+
+            await connection.query(
+                'INSERT INTO mobile_order_items (order_id, product_id, quantity, price, total) VALUES (?, ?, ?, ?, ?)',
+                [orderId, item.product_id, item.quantity, price, total]
+            );
+            subtotal += total;
+        }
+
+        const finalTotal = subtotal + Number(taxRows[0].tax);
+
+        await connection.query(
+            'UPDATE mobile_order SET sub_total = ?, total_amount = ? WHERE id = ?',
+            [subtotal, finalTotal, orderId]
+        );
+
+        await connection.commit();
+        transactionStarted = false;
+        committed = true;
+
+        return getOrderDetails(com.pool, orderId);
+    } catch (error) {
+        if (transactionStarted) {
+            try {
+                await connection.rollback();
+            } catch (rollbackError) {
+                logger.error(`Failed to roll back cart order transaction: ${rollbackError.message}`);
+            }
+        }
+
+        if (!committed && uploadedImage?.public_id) {
+            try {
+                await uploader.delete(uploadedImage.public_id);
+            } catch (cleanupError) {
+                logger.error(`Failed to remove payment image after order failure: ${cleanupError.message}`);
+            }
+        }
+
+        if (insertingOrder && error.code === 'ER_DUP_ENTRY') {
+            const duplicateOrder = await getOrderForIdempotencyKey(com.pool, idempotencyKey);
+            if (duplicateOrder && Number(duplicateOrder.user_id) === Number(user_id)) {
+                return getOrderDetails(com.pool, duplicateOrder.id);
+            }
+            throw new AppError('Idempotency-Key has already been used', 409);
+        }
+
+        throw error;
+    } finally {
+        if (connection) connection.release();
+    }
+};
 
 exports.orderList = async (userId)=>{
 

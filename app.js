@@ -10,8 +10,8 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(errorHandler);
 app.use('/uploads', express.static('uploads'));
 app.use('/api',Authrouter);
+app.use(errorHandler);
 
 module.exports = app;

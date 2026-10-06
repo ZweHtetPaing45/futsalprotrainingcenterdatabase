@@ -9,23 +9,23 @@ exports.authMiddle =async (req,res,next)=>{
 
         const header = req.headers.authorization;
 
-        if(!header)throw new AppError('Unauthorized',500);
+        if(!header)throw new AppError('Unauthorized',401);
 
         const token = header.split(' ')[1];
 
-        if(!token)throw new AppError('Unauthorized',500);
+        if(!token)throw new AppError('Unauthorized',401);
 
         const decoded = util.verifyToken(token);
 
         // console.log("decoded",decoded);
 
-        if(!decoded)throw new AppError('Unauthorized',500);
+        if(!decoded)throw new AppError('Unauthorized',401);
 
         const user = await repo.findUserId(decoded.id);
 
         // console.log("user",user);
 
-        if(!user)throw new AppError('Unauthorized',500);
+        if(!user)throw new AppError('Unauthorized',401);
 
         req.user = user;
 

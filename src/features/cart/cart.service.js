@@ -1,5 +1,4 @@
 const AppError = require("../../utils/AppError");
-const logger = require("../../utils/logger");
 const repo = require("./cart.repositories");
 
 class cartOrderService {
@@ -13,17 +12,8 @@ class cartOrderService {
     payment_method,
     items,
     file,
+    idempotencyKey,
   ) {
-    console.log("user_id", user_id);
-    console.log("customer_name", customer_name);
-    console.log("phone", phone);
-    console.log("email", email);
-    console.log("delivery_address", delivery_address);
-    console.log("remark", remark);
-    console.log("payment_method", payment_method);
-    console.log("items", items);
-    console.log("file", file);
-
     if (!user_id) throw new AppError("User Id is required", 400);
     if (!customer_name) throw new AppError("Customer Name is required", 400);
     if (!phone) throw new AppError("Phone is required", 400);
@@ -45,6 +35,7 @@ class cartOrderService {
       payment_method,
       items,
       file,
+      idempotencyKey,
     );
 
     return result;

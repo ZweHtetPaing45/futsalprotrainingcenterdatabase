@@ -6,7 +6,6 @@ class cartOrderController {
       const file = req.file;
 
       const {
-        user_id,
         customer_name,
         phone,
         email,
@@ -15,6 +14,7 @@ class cartOrderController {
         payment_method,
         items,
       } = req.body;
+      const user_id = req.user[0].id;
 
       const result = await services.order(
         user_id,
@@ -26,6 +26,7 @@ class cartOrderController {
         payment_method,
         items,
         file,
+        req.get("Idempotency-Key"),
       );
 
       res.status(200).json({
