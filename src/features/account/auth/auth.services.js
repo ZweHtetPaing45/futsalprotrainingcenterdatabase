@@ -33,8 +33,6 @@ class Services {
 
         const tempToken = util.generateToken({name,email,phone});
 
-
-
         otpStore[tempToken]= {
             name,
             email,
